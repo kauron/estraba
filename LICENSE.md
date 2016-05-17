@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-PCPartPicker (excluding lib/DatabasePCStore.jar)  
+ESTRABA (excluding lib/jGPX.jar)  
 Copyright (c) 2016 Jesús Vélez Palacios, Carlos Santiago Galindo Jiménez
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
