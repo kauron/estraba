@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTabPane;
 import com.lynden.gmapsfx.GoogleMapView;
 import es.kauron.estraba.App;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.AreaChart;
@@ -70,11 +71,15 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        elevationButton.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/elevation.png"))));
-        speedButton.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/speed.png"))));
-        hrButton.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/hr.png"))));
-        cadenceButton.setGraphic(new ImageView(new Image(App.class.getResourceAsStream("img/cadence.png"))));
+        ((ImageView)elevationButton.getGraphic()).setImage(new Image(App.class.getResourceAsStream("img/elevation.png")));
+        ((ImageView)speedButton.getGraphic()).setImage(new Image(App.class.getResourceAsStream("img/speed.png")));
+        ((ImageView)hrButton.getGraphic()).setImage(new Image(App.class.getResourceAsStream("img/hr.png")));
+        ((ImageView)cadenceButton.getGraphic()).setImage(new Image(App.class.getResourceAsStream("img/cadence.png")));
+    }
 
+    @FXML
+    private void onMapButton(ActionEvent event){
+        System.out.println(((JFXButton)event.getSource()).getId());
     }
 }
 

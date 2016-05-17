@@ -32,7 +32,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.util.ResourceBundle;
-
 import static java.util.ResourceBundle.getBundle;
 
 /**
