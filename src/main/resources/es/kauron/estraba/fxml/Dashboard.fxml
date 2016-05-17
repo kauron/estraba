@@ -12,11 +12,11 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import jfxtras.scene.layout.HBox?>
-<?import jfxtras.scene.layout.VBox?>
 
-<JFXTabPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1">
+<JFXTabPane fx:id="root" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1">
    <tabs>
       <Tab fx:id="tabDashboard" text="%tab.dashboard">
          <content>
@@ -34,20 +34,20 @@
          <content>
             <VBox>
                <children>
-                  <HBox>
+                  <HBox VBox.vgrow="ALWAYS">
                      <children>
-                        <GoogleMapView fx:id="mapView" />
+                        <GoogleMapView fx:id="mapView" HBox.hgrow="ALWAYS" />
                         <JFXListView fx:id="mapSummary" minWidth="100.0" />
                      </children>
                   </HBox>
                   <HBox minHeight="128.0" prefHeight="0.0">
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
+                        <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <JFXButton minHeight="32.0" minWidth="32.0" />
-                              <JFXButton layoutX="10.0" layoutY="10.0" minHeight="32.0" minWidth="32.0" />
-                              <JFXButton layoutX="10.0" layoutY="10.0" minHeight="32.0" minWidth="32.0" />
-                              <JFXButton layoutX="10.0" layoutY="42.0" minHeight="32.0" minWidth="32.0" />
+                              <JFXButton fx:id="elevationButton" minHeight="32.0" minWidth="32.0" />
+                              <JFXButton fx:id="speedButton" layoutX="10.0" layoutY="10.0" minHeight="32.0" minWidth="32.0" />
+                              <JFXButton fx:id="hrButton" layoutX="10.0" layoutY="10.0" minHeight="32.0" minWidth="32.0" />
+                              <JFXButton fx:id="cadenceButton" layoutX="10.0" layoutY="42.0" minHeight="32.0" minWidth="32.0" />
                            </children>
                         </VBox>
                         <LineChart minHeight="100.0" prefWidth="9999.0">

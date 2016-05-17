@@ -50,7 +50,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(
-                App.class.getResource("fxml/App.fxml"), GENERAL_BUNDLE);
+                App.class.getResource("fxml/Dashboard.fxml"), GENERAL_BUNDLE);
         Parent root = loader.load();
         stage.getIcons().add(new Image(App.class.getResource("img/icon.png").toString()));
         stage.setTitle("ESTRABA");
