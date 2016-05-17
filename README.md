@@ -1,4 +1,4 @@
-# PCPartPicker
+# ESTRABA
 ETSINF 2016 - IPC Assignment  
 [Carlos Santiago Galindo Jiménez](https://github.com/kauron)  
 [Jesús Vélez Palacios](https://github.com/baudlord)
