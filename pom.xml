@@ -35,6 +35,17 @@
     <artifactId>estraba</artifactId>
     <version>0.1</version>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
+            <id>Maven Snapshots</id>
+            <url>https://oss.sonatype.org/content/groups/public</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>com.sun.istack</groupId>
@@ -52,6 +63,11 @@
             <version>1.0.13</version>
         </dependency>
         <dependency>
+            <groupId>com.github.rterp</groupId>
+            <artifactId>GMapsFX</artifactId>
+            <version>GMapsFX-2.0.5</version>
+        </dependency>
+        <dependency>
             <groupId>jgpx</groupId>
             <artifactId>jgpx</artifactId>
             <version>1.0</version>
@@ -61,6 +77,31 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jfxtras</groupId>
+            <artifactId>jfxtras-common</artifactId>
+            <version>8.0-r4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jfxtras</groupId>
+            <artifactId>jfxtras-controls</artifactId>
+            <version>8.0-r4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jfxtras</groupId>
+            <artifactId>jfxtras-fxml</artifactId>
+            <version>8.0-r4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jfxtras</groupId>
+            <artifactId>jfxtras-roboto</artifactId>
+            <version>8.0-r4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jfoenix</groupId>
+            <artifactId>jfoenix</artifactId>
+            <version>0.0.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

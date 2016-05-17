@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.lynden.gmapsfx.GoogleMapView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import jfxtras.scene.layout.HBox?>
+<?import jfxtras.scene.layout.VBox?>
+
+<JFXTabPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <tabs>
+      <Tab fx:id="tabDashboard" text="%tab.dashboard">
+         <content>
+            <AnchorPane>
+               <children>
+                  <Label alignment="CENTER" text="%label.welcome" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <font>
+                        <Font name="Roboto" size="50.0" />
+                     </font>
+                  </Label>
+               </children></AnchorPane>
+         </content>
+      </Tab>
+      <Tab fx:id="tabMap" text="%tab.map">
+         <content>
+            <VBox>
+               <children>
+                  <HBox>
+                     <children>
+                        <GoogleMapView fx:id="mapView" />
+                        <JFXListView fx:id="mapSummary" minWidth="100.0" />
+                     </children>
+                  </HBox>
+                  <HBox minHeight="128.0" prefHeight="0.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <JFXButton minHeight="32.0" minWidth="32.0" />
+                              <JFXButton layoutX="10.0" layoutY="10.0" minHeight="32.0" minWidth="32.0" />
+                              <JFXButton layoutX="10.0" layoutY="10.0" minHeight="32.0" minWidth="32.0" />
+                              <JFXButton layoutX="10.0" layoutY="42.0" minHeight="32.0" minWidth="32.0" />
+                           </children>
+                        </VBox>
+                        <LineChart minHeight="100.0" prefWidth="9999.0">
+                          <xAxis>
+                            <CategoryAxis side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis side="LEFT" />
+                          </yAxis>
+                        </LineChart>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </content>
+      </Tab>
+      <Tab fx:id="tabGraph" text="\%tab.graph">
+         <content>
+            <VBox>
+               <children>
+                  <AreaChart fx:id="elevationChart" minHeight="100.0">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                  </AreaChart>
+                  <LineChart fx:id="speedChart" minHeight="100.0">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                  </LineChart>
+                  <LineChart fx:id="hrChart" minHeight="100.0">
+                     <xAxis>
+                        <CategoryAxis side="BOTTOM" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT" />
+                     </yAxis>
+                  </LineChart>
+                  <LineChart fx:id="cadenceChart" minHeight="100.0">
+                     <xAxis>
+                        <CategoryAxis side="BOTTOM" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT" />
+                     </yAxis>
+                  </LineChart>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+         </content>
+      </Tab>
+      <Tab fx:id="tabSettings" text="%tab.settings">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        </content>
+      </Tab>
+   </tabs>
+</JFXTabPane>
