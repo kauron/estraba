@@ -1,7 +1,6 @@
 package es.kauron.estraba.controller;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXSnackbar;
 import com.lynden.gmapsfx.GoogleMapView;
 import com.lynden.gmapsfx.javascript.object.GoogleMap;
@@ -36,6 +35,9 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.net.URL;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ResourceBundle;
 
 /**
@@ -52,25 +54,82 @@ public class DashboardController implements Initializable {
     private Tab tabDashboard;
 
     @FXML
-    private JFXListView<?> listLeft;
+    private Label labelMotivationUpper;
+
+    @FXML
+    private ImageView imgHR;
+
+    @FXML
+    private Label valueHRAvg;
+
+    @FXML
+    private Label valueHRMin;
+
+    @FXML
+    private Label valueHRMax;
+
+    @FXML
+    private ImageView imgSpeed;
+
+    @FXML
+    private Label valueSpeedAvg;
+
+    @FXML
+    private Label valueSpeedMax;
+
+    @FXML
+    private ImageView imgCadence;
+
+    @FXML
+    private Label valueCadenceAvg;
+
+    @FXML
+    private Label valueCadenceMax;
 
     @FXML
     private PieChart zoneChart;
 
     @FXML
-    private JFXListView<?> listRight;
+    private Label valueDate;
 
     @FXML
-    private Label motivationLabel;
+    private Label valueTime;
+
+    @FXML
+    private Label valueActiveTime;
+
+    @FXML
+    private Label valueTotalTime;
+
+    @FXML
+    private ImageView imgDate;
+
+    @FXML
+    private Label valueDistance;
+
+    @FXML
+    private ImageView imgDistance;
+
+    @FXML
+    private Label valueElevation;
+
+    @FXML
+    private Label valueAscent;
+
+    @FXML
+    private Label valueDescent;
+
+    @FXML
+    private ImageView imgElevation;
+
+    @FXML
+    private Label labelMotivationLower;
 
     @FXML
     private Tab tabMap;
 
     @FXML
     private GoogleMapView mapView;
-
-    @FXML
-    private JFXListView<?> mapSummary;
 
     @FXML
     private JFXButton elevationButton;
@@ -102,7 +161,6 @@ public class DashboardController implements Initializable {
     @FXML
     private Tab tabSettings;
 
-    private TrackData trackData;
     private JFXSnackbar snackbar;
     private final double DISTANCE_EPSILON = 1;
 
@@ -114,6 +172,13 @@ public class DashboardController implements Initializable {
         ((ImageView)hrButton.getGraphic()).setImage(new Image(App.class.getResourceAsStream("img/hr.png")));
         ((ImageView)cadenceButton.getGraphic()).setImage(new Image(App.class.getResourceAsStream("img/cadence.png")));
 
+        // set icons of dashboard
+        imgHR.setImage(new Image(App.class.getResourceAsStream("img/hr.png")));
+        imgSpeed.setImage(new Image(App.class.getResourceAsStream("img/speed.png")));
+        imgCadence.setImage(new Image(App.class.getResourceAsStream("img/cadence.png")));
+        imgDate.setImage(new Image(App.class.getResourceAsStream("img/date.png")));
+        imgDistance.setImage(new Image(App.class.getResourceAsStream("img/distance.png")));
+        imgElevation.setImage(new Image(App.class.getResourceAsStream("img/elevation.png")));
 
     }
 
@@ -129,20 +194,40 @@ public class DashboardController implements Initializable {
     }
 
     private void loadTrack(TrackData track) {
-        // populate dashboard
-        trackData.getStartTime();
-        trackData.getTotalDuration();
-        trackData.getMovingTime();
-        trackData.getTotalDistance();
-        trackData.getTotalAscent();
-        trackData.getTotalDescend();
-        trackData.getMaxSpeed();
-        trackData.getAverageSpeed();
-        trackData.getMaxHeartrate();
-        trackData.getMinHeartRate();
-        trackData.getAverageHeartrate();
-        trackData.getMaxCadence();
-        trackData.getAverageCadence();
+        valueHRAvg.setText(track.getAverageHeartrate()
+                + App.GENERAL_BUNDLE.getString("unit.bpm"));
+        valueHRMax.setText(track.getMaxHeartrate()
+                + App.GENERAL_BUNDLE.getString("unit.bpm"));
+        valueHRMin.setText(track.getMinHeartRate()
+                + App.GENERAL_BUNDLE.getString("unit.bpm"));
+
+        valueSpeedAvg.setText(String.format("%.2f", track.getAverageSpeed())
+                + App.GENERAL_BUNDLE.getString("unit.kmph"));
+        valueSpeedMax.setText(String.format("%.2f", track.getMaxSpeed())
+                + App.GENERAL_BUNDLE.getString("unit.kmph"));
+
+        valueCadenceAvg.setText(track.getAverageCadence()
+                + App.GENERAL_BUNDLE.getString("unit.hz"));
+        valueCadenceMax.setText(track.getMaxCadence()
+                + App.GENERAL_BUNDLE.getString("unit.hz"));
+
+        valueDate.setText(track.getStartTime().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)));
+        valueTime.setText(track.getStartTime().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)));
+        valueActiveTime.setText(LocalTime.MIDNIGHT.plus(track.getMovingTime())
+                .format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)));
+        valueTotalTime.setText(App.GENERAL_BUNDLE.getString("time.of")
+                + LocalTime.MIDNIGHT.plus(track.getTotalDuration())
+                .format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)));
+
+        valueDistance.setText(track.getTotalDistance()
+                + App.GENERAL_BUNDLE.getString("unit.m"));
+
+        valueElevation.setText((int)(track.getTotalAscent() - track.getTotalDescend())
+                + App.GENERAL_BUNDLE.getString("unit.m"));
+        valueAscent.setText((int)track.getTotalAscent()
+                + App.GENERAL_BUNDLE.getString("unit.m"));
+        valueDescent.setText((int)track.getTotalDescend()
+                + App.GENERAL_BUNDLE.getString("unit.m"));
 
         // create charts data
         XYChart.Series<Number, Number> elevationChartData = new XYChart.Series<>();
@@ -151,7 +236,8 @@ public class DashboardController implements Initializable {
         XYChart.Series<Number, Number> cadenceChartData = new XYChart.Series<>();
         MVCArray pathArray = new MVCArray();
 
-        ObservableList<Chunk> chunks = trackData.getChunks();
+        // traverse the chunks
+        ObservableList<Chunk> chunks = track.getChunks();
         double currentDistance = 0.0;
         for (Chunk chunk : chunks) {
             currentDistance += chunk.getDistance();
@@ -190,6 +276,7 @@ public class DashboardController implements Initializable {
         String name = file.getName();
         JAXBContext jaxbContext = JAXBContext.newInstance(GpxType.class, TrackPointExtensionT.class);
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+        @SuppressWarnings("unchecked")
         JAXBElement<Object> jaxbElement = (JAXBElement<Object>) unmarshaller.unmarshal(file);
         GpxType gpx = (GpxType) jaxbElement.getValue();
 
