@@ -5,6 +5,10 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXSnackbar;
 import com.lynden.gmapsfx.GoogleMapView;
 import com.lynden.gmapsfx.javascript.object.GoogleMap;
+import com.lynden.gmapsfx.javascript.object.LatLong;
+import com.lynden.gmapsfx.javascript.object.MVCArray;
+import com.lynden.gmapsfx.shapes.Polyline;
+import com.lynden.gmapsfx.shapes.PolylineOptions;
 import es.kauron.estraba.App;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -98,18 +102,34 @@ public class DashboardController implements Initializable {
     @FXML
     private Tab tabSettings;
 
-    private GoogleMap map;
     private TrackData trackData;
     private JFXSnackbar snackbar;
+    private final double DISTANCE_EPSILON = 1;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // populate map icons
         ((ImageView)elevationButton.getGraphic()).setImage(new Image(App.class.getResourceAsStream("img/elevation.png")));
         ((ImageView)speedButton.getGraphic()).setImage(new Image(App.class.getResourceAsStream("img/speed.png")));
         ((ImageView)hrButton.getGraphic()).setImage(new Image(App.class.getResourceAsStream("img/hr.png")));
         ((ImageView)cadenceButton.getGraphic()).setImage(new Image(App.class.getResourceAsStream("img/cadence.png")));
 
 
+    }
+
+    @FXML
+    private void onMapButton(ActionEvent event){
+        System.out.println(((JFXButton)event.getSource()).getId());
+    }
+
+    public void postinit() {
+        snackbar = new JFXSnackbar();
+        snackbar.registerSnackbarContainer(root);
+        try {load();} catch (JAXBException e) {e.printStackTrace();}
+    }
+
+    private void loadTrack(TrackData track) {
+        // populate dashboard
         trackData.getStartTime();
         trackData.getTotalDuration();
         trackData.getMovingTime();
@@ -124,37 +144,45 @@ public class DashboardController implements Initializable {
         trackData.getMaxCadence();
         trackData.getAverageCadence();
 
-        // populate charts
-        ObservableList<Chunk> chunks = trackData.getChunks();
+        // create charts data
         XYChart.Series<Number, Number> elevationChartData = new XYChart.Series<>();
         XYChart.Series<Number, Number> speedChartData = new XYChart.Series<>();
         XYChart.Series<Number, Number> hrChartData = new XYChart.Series<>();
         XYChart.Series<Number, Number> cadenceChartData = new XYChart.Series<>();
-        double lastDistance = Double.MIN_VALUE;
-        for (int i = 0; i < chunks.size(); i++) {
-            //map
-            //elevationChart (range min-max+10)
-            elevationChartData.getData().add(new XYChart.Data<>(chunk.getDistance(), chunk.getAscent()));
-            //speedChart (range 0-max+10)
-            speedChartData.getData().add(new XYChart.Data<>(chunk.getDistance(), chunk.getAscent()));
-            //hrChart (range 30-200)
-            //cadenceChart (range 0-200 (rollapalluza))
+        MVCArray pathArray = new MVCArray();
+
+        ObservableList<Chunk> chunks = trackData.getChunks();
+        double currentDistance = 0.0;
+        for (Chunk chunk : chunks) {
+            currentDistance += chunk.getDistance();
+            if (chunk.getDistance() < DISTANCE_EPSILON) continue;
+
+            pathArray.push(new LatLong(chunk.getLastPoint().getLatitude(), chunk.getLastPoint().getLongitude()));
+            elevationChartData.getData().add(new XYChart.Data<>(currentDistance, chunk.getAscent()));
+            speedChartData.getData().add(new XYChart.Data<>(currentDistance, chunk.getSpeed()));
+            hrChartData.getData().add(new XYChart.Data<>(currentDistance, chunk.getAvgHeartRate()));
+            cadenceChartData.getData().add(new XYChart.Data<>(currentDistance, chunk.getAvgCadence()));
         }
 
+        // populate the charts
+        elevationChart.getData().add(elevationChartData);
+        speedChart.getData().add(speedChartData);
+        hrChart.getData().add(hrChartData);
+        cadenceChart.getData().add(cadenceChartData);
+
+        // populate and render the map
+        GoogleMap map = mapView.createMap();
+        map.addMapShape(new Polyline(
+                new PolylineOptions()
+                        .path(pathArray)
+                        .strokeColor("red")
+                        .strokeWeight(2))
+        );
+
     }
 
     @FXML
-    private void onMapButton(ActionEvent event){
-        System.out.println(((JFXButton)event.getSource()).getId());
-    }
-
-    public void postinit() {
-        snackbar = new JFXSnackbar();
-        snackbar.registerSnackbarContainer(root);
-    }
-
-    @FXML
-    private void load(ActionEvent event) throws JAXBException {
+    private void load() throws JAXBException {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(root.getScene().getWindow());
         if (file == null) return;
@@ -166,7 +194,7 @@ public class DashboardController implements Initializable {
         GpxType gpx = (GpxType) jaxbElement.getValue();
 
         if (gpx != null) {
-            trackData = new TrackData(new Track(gpx.getTrk().get(0)));
+            loadTrack(new TrackData(new Track(gpx.getTrk().get(0))));
             snackbar.show("GPX file: " + name + "successfully loaded", 3000);
         } else {
             snackbar.show("Error loading GPX file: " + name, 3000);

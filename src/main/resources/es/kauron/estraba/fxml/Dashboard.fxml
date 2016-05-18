@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.lynden.gmapsfx.GoogleMapView?>
 <?import java.lang.String?>
@@ -22,106 +21,103 @@
 
 <AnchorPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.kauron.estraba.controller.DashboardController">
    <children>
-      <JFXTabPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <JFXTabPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <tabs>
-            <Tab fx:id="tabDashboard" text="%tab.dashboard">
+            <Tab fx:id="tabDashboard" styleClass=".estraba.dashboard" text="%tab.dashboard">
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                        <Label fx:id="labelMotivationUpper" alignment="CENTER" focusTraversable="false" maxWidth="1.7976931348623157E308" text="%label.motivation">
+                           <font>
+                              <Font name="Roboto" size="56.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </VBox.margin>
+                           <styleClass>
+                              <String fx:value=".estraba.dashboard.motivation" />
+                              <String fx:value=".estraba.dashboard.motivation.upper" />
+                           </styleClass>
+                        </Label>
+                        <HBox prefHeight="360.0" prefWidth="800.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <VBox minHeight="375.0" minWidth="200.0">
+                              <VBox minHeight="360.0" minWidth="300.0" prefHeight="300.0">
                                  <children>
-                                    <HBox fx:id="valueHRavg" prefHeight="75.0" prefWidth="180.0" VBox.vgrow="ALWAYS">
+                                    <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <ImageView fx:id="imgDate" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" styleClass=".estraba.dashboard.icon">
-                                             <image>
-                                                <Image url="@../img/date.png" />
-                                             </image>
-                                          </ImageView>
-                                          <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                                             <children>
-                                                <Label fx:id="labelDateDay" text="%label.date" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <padding>
-                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                                   </padding>
-                                                   <font>
-                                                      <Font name="Roboto" size="13.0" />
-                                                   </font>
-                                                   <styleClass>
-                                                      <String fx:value=".estraba.dashboard.label" />
-                                                      <String fx:value=".estraba.dashboard.label.HR" />
-                                                   </styleClass>
-                                                </Label>
-                                                <Label fx:id="labelDateTime" alignment="CENTER" text="92 bpm" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <styleClass>
-                                                      <String fx:value=".estraba.dashboard.value" />
-                                                      <String fx:value=".estraba.dashboard.value.HR" />
-                                                   </styleClass>
-                                                   <font>
-                                                      <Font size="30.0" />
-                                                   </font>
-                                                </Label>
-                                             </children>
-                                          </AnchorPane>
-                                       </children>
-                                    </HBox>
-                                    <HBox layoutX="10.0" layoutY="10.0" prefHeight="75.0" prefWidth="180.0" VBox.vgrow="ALWAYS">
-                                       <children>
-                                          <ImageView fx:id="imgHRavg" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" styleClass=".estraba.dashboard.icon">
+                                          <ImageView fx:id="imgHR" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass=".estraba.dashboard.icon">
                                              <image>
                                                 <Image url="@../img/hr.png" />
                                              </image>
                                           </ImageView>
-                                          <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                          <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Label fx:id="labelHRavg" alignment="CENTER" text="92 bpm" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="%label.hr">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                   <font>
+                                                      <Font name="Roboto" size="13.0" />
+                                                   </font>
                                                    <styleClass>
-                                                      <String fx:value=".estraba.dashboard.value" />
-                                                      <String fx:value=".estraba.dashboard.value.HR" />
+                                                      <String fx:value=".estraba.dashboard.label" />
+                                                      <String fx:value=".estraba.dashboard.label.HR" />
                                                    </styleClass>
+                                                </Label>
+                                                <Label fx:id="valueHRAvg" alignment="CENTER" maxWidth="1.7976931348623157E308" text="92 bpm" textAlignment="CENTER">
                                                    <font>
                                                       <Font size="30.0" />
                                                    </font>
-                                                </Label>
-                                                <Label text="%label.hr" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <padding>
-                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                                   </padding>
-                                                   <font>
-                                                      <Font name="Roboto" size="13.0" />
-                                                   </font>
                                                    <styleClass>
-                                                      <String fx:value=".estraba.dashboard.label" />
-                                                      <String fx:value=".estraba.dashboard.label.HR" />
+                                                      <String fx:value=".estraba.dashboard.value" />
+                                                      <String fx:value=".estraba.dashboard.value.main" />
+                                                      <String fx:value=".estraba.dashboard.value.avghr" />
                                                    </styleClass>
                                                 </Label>
-                                                <Label layoutX="72.0" layoutY="10.0" text="%label.hr" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                                                   <padding>
-                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                                   </padding>
-                                                   <font>
-                                                      <Font name="Roboto" size="13.0" />
-                                                   </font>
-                                                   <styleClass>
-                                                      <String fx:value=".estraba.dashboard.label" />
-                                                      <String fx:value=".estraba.dashboard.label.HR" />
-                                                   </styleClass>
-                                                </Label>
+                                                <HBox>
+                                                   <children>
+                                                      <Label fx:id="valueHRMin" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="60bpm" HBox.hgrow="ALWAYS">
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                         </padding>
+                                                         <font>
+                                                            <Font name="Roboto" size="13.0" />
+                                                         </font>
+                                                         <styleClass>
+                                                            <String fx:value=".estraba.dashboard.value" />
+                                                            <String fx:value=".estraba.dashboard.value.sub" />
+                                                            <String fx:value=".estraba.dashboard.value.minhr" />
+                                                         </styleClass>
+                                                      </Label>
+                                                      <Label fx:id="valueHRMax" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" text="100bpm" HBox.hgrow="ALWAYS">
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                         </padding>
+                                                         <font>
+                                                            <Font name="Roboto" size="13.0" />
+                                                         </font>
+                                                         <styleClass>
+                                                            <String fx:value=".estraba.dashboard.value" />
+                                                            <String fx:value=".estraba.dashboard.value.sub" />
+                                                            <String fx:value=".estraba.dashboard.value.maxhr" />
+                                                         </styleClass>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
                                              </children>
-                                          </AnchorPane>
+                                          </VBox>
                                        </children>
                                     </HBox>
-                                    <HBox layoutX="10.0" layoutY="10.0" prefHeight="75.0" prefWidth="180.0" VBox.vgrow="ALWAYS">
+                                    <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <ImageView fx:id="imgHRmax" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" styleClass=".estraba.dashboard.icon">
+                                          <ImageView fx:id="imgSpeed" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass=".estraba.dashboard.icon">
                                              <image>
                                                 <Image url="@../img/speed.png" />
                                              </image>
                                           </ImageView>
-                                          <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                          <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Label text="%label.hr" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="%label.speed">
                                                    <padding>
                                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                    </padding>
@@ -133,29 +129,17 @@
                                                       <String fx:value=".estraba.dashboard.label.HR" />
                                                    </styleClass>
                                                 </Label>
-                                                <Label fx:id="valueHR2" alignment="CENTER" text="92 bpm" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <styleClass>
-                                                      <String fx:value=".estraba.dashboard.value" />
-                                                      <String fx:value=".estraba.dashboard.value.HR" />
-                                                   </styleClass>
+                                                <Label fx:id="valueSpeedAvg" alignment="CENTER" maxWidth="1.7976931348623157E308" text="35 Km/h" textAlignment="CENTER">
                                                    <font>
                                                       <Font size="30.0" />
                                                    </font>
+                                                   <styleClass>
+                                                      <String fx:value=".estraba.dashboard.value" />
+                                                      <String fx:value=".estraba.dashboard.value.main" />
+                                                      <String fx:value=".estraba.dashboard.value.avgspeed" />
+                                                   </styleClass>
                                                 </Label>
-                                             </children>
-                                          </AnchorPane>
-                                       </children>
-                                    </HBox>
-                                    <HBox layoutX="10.0" layoutY="85.0" prefHeight="75.0" prefWidth="180.0" VBox.vgrow="ALWAYS">
-                                       <children>
-                                          <ImageView fx:id="imgHR11" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" styleClass=".estraba.dashboard.icon">
-                                             <image>
-                                                <Image url="@../img/speedmax.png" />
-                                             </image>
-                                          </ImageView>
-                                          <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                                             <children>
-                                                <Label text="%label.hr" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <Label fx:id="valueSpeedMax" alignment="CENTER" maxWidth="1.7976931348623157E308" text="56 Km/h">
                                                    <padding>
                                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                    </padding>
@@ -163,33 +147,25 @@
                                                       <Font name="Roboto" size="13.0" />
                                                    </font>
                                                    <styleClass>
-                                                      <String fx:value=".estraba.dashboard.label" />
-                                                      <String fx:value=".estraba.dashboard.label.HR" />
-                                                   </styleClass>
-                                                </Label>
-                                                <Label fx:id="valueHR11" alignment="CENTER" text="92 bpm" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <styleClass>
                                                       <String fx:value=".estraba.dashboard.value" />
-                                                      <String fx:value=".estraba.dashboard.value.HR" />
+                                                      <String fx:value=".estraba.dashboard.value.sub" />
+                                                      <String fx:value=".estraba.dashboard.value.maxspeed" />
                                                    </styleClass>
-                                                   <font>
-                                                      <Font size="30.0" />
-                                                   </font>
                                                 </Label>
                                              </children>
-                                          </AnchorPane>
+                                          </VBox>
                                        </children>
                                     </HBox>
-                                    <HBox layoutX="10.0" layoutY="160.0" prefHeight="75.0" prefWidth="180.0" VBox.vgrow="ALWAYS">
+                                    <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <ImageView fx:id="imgHR21" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" styleClass=".estraba.dashboard.icon">
+                                          <ImageView fx:id="imgCadence" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass=".estraba.dashboard.icon">
                                              <image>
                                                 <Image url="@../img/cadence.png" />
                                              </image>
                                           </ImageView>
-                                          <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                          <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Label text="%label.hr" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="%label.cadence">
                                                    <padding>
                                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                    </padding>
@@ -201,17 +177,31 @@
                                                       <String fx:value=".estraba.dashboard.label.HR" />
                                                    </styleClass>
                                                 </Label>
-                                                <Label fx:id="valueHR21" alignment="CENTER" text="92 bpm" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <styleClass>
-                                                      <String fx:value=".estraba.dashboard.value" />
-                                                      <String fx:value=".estraba.dashboard.value.HR" />
-                                                   </styleClass>
+                                                <Label fx:id="valueCadenceAvg" alignment="CENTER" maxWidth="1.7976931348623157E308" text="90 Hz" textAlignment="CENTER">
                                                    <font>
                                                       <Font size="30.0" />
                                                    </font>
+                                                   <styleClass>
+                                                      <String fx:value=".estraba.dashboard.value" />
+                                                      <String fx:value=".estraba.dashboard.value.main" />
+                                                      <String fx:value=".estraba.dashboard.value.avgcadence" />
+                                                   </styleClass>
+                                                </Label>
+                                                <Label fx:id="valueCadenceMax" alignment="CENTER" maxWidth="1.7976931348623157E308" text="152 Hz">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                   <font>
+                                                      <Font name="Roboto" size="13.0" />
+                                                   </font>
+                                                   <styleClass>
+                                                      <String fx:value=".estraba.dashboard.value" />
+                                                      <String fx:value=".estraba.dashboard.value.sub" />
+                                                      <String fx:value=".estraba.dashboard.value.maxcadence" />
+                                                   </styleClass>
                                                 </Label>
                                              </children>
-                                          </AnchorPane>
+                                          </VBox>
                                        </children>
                                     </HBox>
                                  </children>
@@ -219,17 +209,54 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </HBox.margin>
                               </VBox>
-                              <PieChart fx:id="zoneChart" labelsVisible="false" minHeight="375.0" minWidth="0.0" HBox.hgrow="ALWAYS">
+                              <PieChart fx:id="zoneChart" labelsVisible="false" legendVisible="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="360.0" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin></PieChart>
-                              <VBox layoutX="15.0" layoutY="15.0" minHeight="375.0" minWidth="200.0">
+                              <VBox layoutX="15.0" layoutY="15.0" minHeight="360.0" minWidth="300.0" prefHeight="300.0">
                                  <children>
-                                    <HBox prefHeight="75.0" prefWidth="180.0">
+                                    <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="200.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                          <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Label text="%label.hr" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <Label fx:id="valueCadenceMax11" alignment="CENTER" layoutX="10.0" layoutY="97.0" maxWidth="1.7976931348623157E308" text="Wednesday, 18 May 2016">
+                                                   <padding>
+                                                      <Insets left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                   <font>
+                                                      <Font name="Roboto" size="13.0" />
+                                                   </font>
+                                                   <styleClass>
+                                                      <String fx:value=".estraba.dashboard.value" />
+                                                      <String fx:value=".estraba.dashboard.value.sub" />
+                                                   </styleClass>
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <Label fx:id="valueCadenceMax111" alignment="CENTER" layoutX="10.0" layoutY="30.0" maxWidth="1.7976931348623157E308" text="17:00:14">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" />
+                                                   </padding>
+                                                   <font>
+                                                      <Font name="Roboto" size="13.0" />
+                                                   </font>
+                                                   <styleClass>
+                                                      <String fx:value=".estraba.dashboard.value" />
+                                                      <String fx:value=".estraba.dashboard.value.sub" />
+                                                   </styleClass>
+                                                </Label>
+                                                <Label fx:id="valueCadenceAvg1" alignment="CENTER" maxWidth="1.7976931348623157E308" text="4:37:42" textAlignment="CENTER">
+                                                   <font>
+                                                      <Font size="30.0" />
+                                                   </font>
+                                                   <styleClass>
+                                                      <String fx:value=".estraba.dashboard.value" />
+                                                      <String fx:value=".estraba.dashboard.value.main" />
+                                                      <String fx:value=".estraba.dashboard.value.activetime" />
+                                                   </styleClass>
+                                                </Label>
+                                                <Label fx:id="valueCadenceMax1" alignment="CENTER" maxWidth="1.7976931348623157E308" text="of 5:00:00">
                                                    <padding>
                                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                    </padding>
@@ -237,33 +264,25 @@
                                                       <Font name="Roboto" size="13.0" />
                                                    </font>
                                                    <styleClass>
-                                                      <String fx:value=".estraba.dashboard.label" />
-                                                      <String fx:value=".estraba.dashboard.label.HR" />
-                                                   </styleClass>
-                                                </Label>
-                                                <Label fx:id="valueHR1" alignment="CENTER" text="92 bpm" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <styleClass>
                                                       <String fx:value=".estraba.dashboard.value" />
-                                                      <String fx:value=".estraba.dashboard.value.HR" />
+                                                      <String fx:value=".estraba.dashboard.value.sub" />
+                                                      <String fx:value=".estraba.dashboard.value.totaltime" />
                                                    </styleClass>
-                                                   <font>
-                                                      <Font size="30.0" />
-                                                   </font>
                                                 </Label>
                                              </children>
-                                          </AnchorPane>
-                                          <ImageView fx:id="imgHR1" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" styleClass=".estraba.dashboard.icon">
+                                          </VBox>
+                                          <ImageView fx:id="imgDistance1" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass=".estraba.dashboard.icon">
                                              <image>
-                                                <Image url="@../img/timeexercise.png" />
+                                                <Image url="@../img/timespan.png" />
                                              </image>
                                           </ImageView>
                                        </children>
                                     </HBox>
-                                    <HBox layoutX="10.0" layoutY="10.0" prefHeight="75.0" prefWidth="180.0">
+                                    <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="200.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                          <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Label text="%label.hr" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <Label maxWidth="1.7976931348623157E308" text="%label.distance">
                                                    <padding>
                                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                    </padding>
@@ -275,29 +294,30 @@
                                                       <String fx:value=".estraba.dashboard.label.HR" />
                                                    </styleClass>
                                                 </Label>
-                                                <Label fx:id="valueHR12" alignment="CENTER" text="92 bpm" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <styleClass>
-                                                      <String fx:value=".estraba.dashboard.value" />
-                                                      <String fx:value=".estraba.dashboard.value.HR" />
-                                                   </styleClass>
+                                                <Label fx:id="valueCadenceAvg111" alignment="CENTER" maxWidth="1.7976931348623157E308" text="46714 m" textAlignment="CENTER">
                                                    <font>
                                                       <Font size="30.0" />
                                                    </font>
+                                                   <styleClass>
+                                                      <String fx:value=".estraba.dashboard.value" />
+                                                      <String fx:value=".estraba.dashboard.value.main" />
+                                                      <String fx:value=".estraba.dashboard.value.distance" />
+                                                   </styleClass>
                                                 </Label>
                                              </children>
-                                          </AnchorPane>
-                                          <ImageView fx:id="imgHR12" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" styleClass=".estraba.dashboard.icon">
+                                          </VBox>
+                                          <ImageView fx:id="imgDistance" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass=".estraba.dashboard.icon">
                                              <image>
                                                 <Image url="@../img/distance.png" />
                                              </image>
                                           </ImageView>
                                        </children>
                                     </HBox>
-                                    <HBox layoutX="10.0" layoutY="10.0" prefHeight="75.0" prefWidth="180.0">
+                                    <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="200.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                          <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Label text="%label.hr" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <Label maxWidth="1.7976931348623157E308" text="%label.elevation">
                                                    <padding>
                                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                    </padding>
@@ -309,88 +329,51 @@
                                                       <String fx:value=".estraba.dashboard.label.HR" />
                                                    </styleClass>
                                                 </Label>
-                                                <Label fx:id="valueHR13" alignment="CENTER" text="92 bpm" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <styleClass>
-                                                      <String fx:value=".estraba.dashboard.value" />
-                                                      <String fx:value=".estraba.dashboard.value.HR" />
-                                                   </styleClass>
+                                                <Label fx:id="valueCadenceAvg11" alignment="CENTER" maxWidth="1.7976931348623157E308" text="3166 m" textAlignment="CENTER">
                                                    <font>
                                                       <Font size="30.0" />
                                                    </font>
-                                                </Label>
-                                             </children>
-                                          </AnchorPane>
-                                          <ImageView fx:id="imgHR13" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" styleClass=".estraba.dashboard.icon">
-                                             <image>
-                                                <Image url="@../img/elevation.png" />
-                                             </image>
-                                          </ImageView>
-                                       </children>
-                                    </HBox>
-                                    <HBox layoutX="10.0" layoutY="85.0" prefHeight="75.0" prefWidth="180.0">
-                                       <children>
-                                          <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                                             <children>
-                                                <Label text="%label.hr" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <padding>
-                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                                   </padding>
-                                                   <font>
-                                                      <Font name="Roboto" size="13.0" />
-                                                   </font>
-                                                   <styleClass>
-                                                      <String fx:value=".estraba.dashboard.label" />
-                                                      <String fx:value=".estraba.dashboard.label.HR" />
-                                                   </styleClass>
-                                                </Label>
-                                                <Label fx:id="valueHR121" alignment="CENTER" text="92 bpm" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <styleClass>
                                                       <String fx:value=".estraba.dashboard.value" />
-                                                      <String fx:value=".estraba.dashboard.value.HR" />
+                                                      <String fx:value=".estraba.dashboard.value.main" />
+                                                      <String fx:value=".estraba.dashboard.value.elevation" />
                                                    </styleClass>
-                                                   <font>
-                                                      <Font size="30.0" />
-                                                   </font>
                                                 </Label>
+                                                <HBox>
+                                                   <children>
+                                                      <Label fx:id="valueHRMin1" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="+ 2053m" HBox.hgrow="ALWAYS">
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                         </padding>
+                                                         <font>
+                                                            <Font name="Roboto" size="13.0" />
+                                                         </font>
+                                                         <styleClass>
+                                                            <String fx:value=".estraba.dashboard.value" />
+                                                            <String fx:value=".estraba.dashboard.value.sub" />
+                                                            <String fx:value=".estraba.dashboard.value.ascent" />
+                                                         </styleClass>
+                                                      </Label>
+                                                      <Label fx:id="valueHRMax1" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" text="- 1113 m" HBox.hgrow="ALWAYS">
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                         </padding>
+                                                         <font>
+                                                            <Font name="Roboto" size="13.0" />
+                                                         </font>
+                                                         <styleClass>
+                                                            <String fx:value=".estraba.dashboard.value" />
+                                                            <String fx:value=".estraba.dashboard.value.sub" />
+                                                            <String fx:value=".estraba.dashboard.value.descent" />
+                                                         </styleClass>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
                                              </children>
-                                          </AnchorPane>
-                                          <ImageView fx:id="imgHR121" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" styleClass=".estraba.dashboard.icon">
+                                          </VBox>
+                                          <ImageView fx:id="imgAscent" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass=".estraba.dashboard.icon">
                                              <image>
-                                                <Image url="@../img/ascent.png" />
-                                             </image>
-                                          </ImageView>
-                                       </children>
-                                    </HBox>
-                                    <HBox layoutX="10.0" layoutY="160.0" prefHeight="75.0" prefWidth="180.0">
-                                       <children>
-                                          <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                                             <children>
-                                                <Label text="%label.hr" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <padding>
-                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                                   </padding>
-                                                   <font>
-                                                      <Font name="Roboto" size="13.0" />
-                                                   </font>
-                                                   <styleClass>
-                                                      <String fx:value=".estraba.dashboard.label" />
-                                                      <String fx:value=".estraba.dashboard.label.HR" />
-                                                   </styleClass>
-                                                </Label>
-                                                <Label fx:id="valueHR131" alignment="CENTER" text="92 bpm" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <styleClass>
-                                                      <String fx:value=".estraba.dashboard.value" />
-                                                      <String fx:value=".estraba.dashboard.value.HR" />
-                                                   </styleClass>
-                                                   <font>
-                                                      <Font size="30.0" />
-                                                   </font>
-                                                </Label>
-                                             </children>
-                                          </AnchorPane>
-                                          <ImageView fx:id="imgHR131" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" styleClass=".estraba.dashboard.icon">
-                                             <image>
-                                                <Image url="@../img/descent.png" />
+                                                <Image url="@../img/climb.png" />
                                              </image>
                                           </ImageView>
                                        </children>
@@ -399,16 +382,20 @@
                               </VBox>
                            </children>
                            <VBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                              <Insets />
                            </VBox.margin>
                         </HBox>
-                        <Label fx:id="motivationLabel" alignment="CENTER" focusTraversable="false" maxWidth="1.7976931348623157E308" styleClass=".estraba.dashboard.motivation" text="%label.motivation">
+                        <Label fx:id="motivationLabel" alignment="CENTER" focusTraversable="false" maxWidth="1.7976931348623157E308" text="%label.motivation">
                            <font>
                               <Font name="Roboto" size="56.0" />
                            </font>
                            <VBox.margin>
-                              <Insets bottom="60.0" top="55.0" />
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </VBox.margin>
+                           <styleClass>
+                              <String fx:value=".estraba.dashboard.motivation" />
+                              <String fx:value=".estraba.dashboard.motivation.lower" />
+                           </styleClass>
                         </Label>
                      </children>
                      <padding>
@@ -421,17 +408,12 @@
                <content>
                   <VBox>
                      <children>
-                        <HBox VBox.vgrow="ALWAYS">
+                        <GoogleMapView fx:id="mapView" />
+                        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="128.0">
                            <children>
-                              <GoogleMapView fx:id="mapView" HBox.hgrow="ALWAYS" />
-                              <JFXListView fx:id="mapSummary" minWidth="180.0" />
-                           </children>
-                        </HBox>
-                        <HBox minHeight="128.0" prefHeight="0.0">
-                           <children>
-                              <VBox prefHeight="128.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                              <VBox>
                                  <children>
-                                    <JFXButton fx:id="elevationButton" minHeight="32.0" minWidth="32.0" onAction="#onMapButton">
+                                    <JFXButton fx:id="elevationButton" minHeight="-Infinity" minWidth="-Infinity" onAction="#onMapButton" prefHeight="32.0" prefWidth="32.0">
                                        <graphic>
                                           <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
                                        </graphic>
@@ -439,7 +421,7 @@
                                           <Insets />
                                        </VBox.margin>
                                     </JFXButton>
-                                    <JFXButton fx:id="speedButton" layoutX="10.0" layoutY="10.0" minHeight="32.0" minWidth="32.0" onAction="#onMapButton">
+                                    <JFXButton fx:id="speedButton" layoutX="10.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" onAction="#onMapButton" prefHeight="32.0" prefWidth="32.0">
                                        <graphic>
                                           <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
                                        </graphic>
@@ -447,7 +429,7 @@
                                           <Insets />
                                        </VBox.margin>
                                     </JFXButton>
-                                    <JFXButton fx:id="hrButton" layoutX="10.0" layoutY="10.0" minHeight="32.0" minWidth="32.0" onAction="#onMapButton">
+                                    <JFXButton fx:id="hrButton" layoutX="10.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" onAction="#onMapButton" prefHeight="32.0" prefWidth="32.0">
                                        <graphic>
                                           <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
                                        </graphic>
@@ -455,7 +437,7 @@
                                           <Insets />
                                        </VBox.margin>
                                     </JFXButton>
-                                    <JFXButton fx:id="cadenceButton" layoutX="10.0" layoutY="42.0" minHeight="32.0" minWidth="32.0" onAction="#onMapButton">
+                                    <JFXButton fx:id="cadenceButton" layoutX="10.0" layoutY="42.0" minHeight="-Infinity" minWidth="-Infinity" onAction="#onMapButton" prefHeight="32.0" prefWidth="32.0">
                                        <graphic>
                                           <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
                                        </graphic>
@@ -465,7 +447,7 @@
                                     </JFXButton>
                                  </children>
                               </VBox>
-                              <LineChart minHeight="100.0" prefWidth="9999.0">
+                              <LineChart HBox.hgrow="ALWAYS">
                                 <xAxis>
                                   <CategoryAxis side="BOTTOM" />
                                 </xAxis>
@@ -496,7 +478,7 @@
                         </AreaChart>
                         <LineChart fx:id="speedChart" minHeight="100.0">
                           <xAxis>
-                            <CategoryAxis side="BOTTOM" />
+                            <CategoryAxis />
                           </xAxis>
                           <yAxis>
                             <NumberAxis side="LEFT" />
