@@ -9,6 +9,7 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.image.ImageView?>
@@ -17,65 +18,122 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<JFXTabPane fx:id="root" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.kauron.estraba.controller.DashboardController">
-   <tabs>
-      <Tab fx:id="tabDashboard" text="%tab.dashboard">
-         <content>
-            <AnchorPane>
-               <children>
-                  <Label alignment="CENTER" text="%label.welcome" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <font>
-                        <Font name="Roboto" size="50.0" />
-                     </font>
-                  </Label>
-               </children></AnchorPane>
-         </content>
-      </Tab>
-      <Tab fx:id="tabMap" text="%tab.map">
-         <content>
-            <VBox>
-               <children>
-                  <HBox VBox.vgrow="ALWAYS">
+<AnchorPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.kauron.estraba.controller.DashboardController">
+   <children>
+      <JFXTabPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <tabs>
+            <Tab fx:id="tabDashboard" text="%tab.dashboard">
+               <content>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <GoogleMapView fx:id="mapView" HBox.hgrow="ALWAYS" />
-                        <JFXListView fx:id="mapSummary" minWidth="100.0" />
-                     </children>
-                  </HBox>
-                  <HBox minHeight="128.0" prefHeight="0.0">
-                     <children>
-                        <VBox prefHeight="128.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                        <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <JFXButton fx:id="elevationButton" minHeight="32.0" minWidth="32.0" onAction="#onMapButton">
-                                 <graphic>
-                                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                                 </graphic>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin></JFXButton>
-                              <JFXButton fx:id="speedButton" layoutX="10.0" layoutY="10.0" minHeight="32.0" minWidth="32.0" onAction="#onMapButton">
-                                 <graphic>
-                                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                                 </graphic>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin></JFXButton>
-                              <JFXButton fx:id="hrButton" layoutX="10.0" layoutY="10.0" minHeight="32.0" minWidth="32.0" onAction="#onMapButton">
-                                 <graphic>
-                                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                                 </graphic>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin></JFXButton>
-                              <JFXButton fx:id="cadenceButton" layoutX="10.0" layoutY="42.0" minHeight="32.0" minWidth="32.0" onAction="#onMapButton">
-                                 <graphic>
-                                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                                 </graphic>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin></JFXButton>
+                              <VBox minHeight="375.0" minWidth="180.0">
+                                 <children>
+                                    <HBox prefHeight="75.0" prefWidth="180.0" />
+                                    <HBox layoutX="10.0" layoutY="10.0" prefHeight="75.0" prefWidth="180.0" />
+                                    <HBox layoutX="10.0" layoutY="10.0" prefHeight="75.0" prefWidth="180.0" />
+                                    <HBox layoutX="10.0" layoutY="110.0" prefHeight="75.0" prefWidth="180.0" />
+                                    <HBox layoutX="10.0" layoutY="102.0" prefHeight="75.0" prefWidth="180.0" />
+                                 </children>
+                              </VBox>
+                              <PieChart fx:id="zoneChart" legendVisible="false" minHeight="375.0" minWidth="0.0" HBox.hgrow="ALWAYS" />
+                              <VBox layoutX="10.0" layoutY="10.0" minHeight="375.0" minWidth="180.0" />
                            </children>
-                        </VBox>
-                        <LineChart minHeight="100.0" prefWidth="9999.0">
+                        </HBox>
+                        <Label fx:id="motivationLabel" alignment="CENTER" focusTraversable="false" maxWidth="1.7976931348623157E308" text="%label.motivation">
+                           <font>
+                              <Font name="Roboto" size="56.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="60.0" top="55.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </VBox>
+               </content>
+            </Tab>
+            <Tab fx:id="tabMap" text="%tab.map">
+               <content>
+                  <VBox>
+                     <children>
+                        <HBox VBox.vgrow="ALWAYS">
+                           <children>
+                              <GoogleMapView fx:id="mapView" HBox.hgrow="ALWAYS" />
+                              <JFXListView fx:id="mapSummary" minWidth="180.0" />
+                           </children>
+                        </HBox>
+                        <HBox minHeight="128.0" prefHeight="0.0">
+                           <children>
+                              <VBox prefHeight="128.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <JFXButton fx:id="elevationButton" minHeight="32.0" minWidth="32.0" onAction="#onMapButton">
+                                       <graphic>
+                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
+                                       </graphic>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </JFXButton>
+                                    <JFXButton fx:id="speedButton" layoutX="10.0" layoutY="10.0" minHeight="32.0" minWidth="32.0" onAction="#onMapButton">
+                                       <graphic>
+                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
+                                       </graphic>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </JFXButton>
+                                    <JFXButton fx:id="hrButton" layoutX="10.0" layoutY="10.0" minHeight="32.0" minWidth="32.0" onAction="#onMapButton">
+                                       <graphic>
+                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
+                                       </graphic>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </JFXButton>
+                                    <JFXButton fx:id="cadenceButton" layoutX="10.0" layoutY="42.0" minHeight="32.0" minWidth="32.0" onAction="#onMapButton">
+                                       <graphic>
+                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
+                                       </graphic>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </JFXButton>
+                                 </children>
+                              </VBox>
+                              <LineChart minHeight="100.0" prefWidth="9999.0">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </LineChart>
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </VBox>
+               </content>
+            </Tab>
+            <Tab fx:id="tabGraph" text="%tab.graph">
+               <content>
+                  <VBox>
+                     <children>
+                        <AreaChart fx:id="elevationChart" minHeight="100.0">
+                          <xAxis>
+                            <CategoryAxis side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis side="LEFT" />
+                          </yAxis>
+                        </AreaChart>
+                        <LineChart fx:id="speedChart" minHeight="100.0">
                           <xAxis>
                             <CategoryAxis side="BOTTOM" />
                           </xAxis>
@@ -83,56 +141,35 @@
                             <NumberAxis side="LEFT" />
                           </yAxis>
                         </LineChart>
+                        <LineChart fx:id="hrChart" minHeight="100.0">
+                           <xAxis>
+                              <CategoryAxis side="BOTTOM" />
+                           </xAxis>
+                           <yAxis>
+                              <NumberAxis side="LEFT" />
+                           </yAxis>
+                        </LineChart>
+                        <LineChart fx:id="cadenceChart" minHeight="100.0">
+                           <xAxis>
+                              <CategoryAxis side="BOTTOM" />
+                           </xAxis>
+                           <yAxis>
+                              <NumberAxis side="LEFT" />
+                           </yAxis>
+                        </LineChart>
                      </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </content>
-      </Tab>
-      <Tab fx:id="tabGraph" text="%tab.graph">
-         <content>
-            <VBox>
-               <children>
-                  <AreaChart fx:id="elevationChart" minHeight="100.0">
-                    <xAxis>
-                      <CategoryAxis side="BOTTOM" />
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis side="LEFT" />
-                    </yAxis>
-                  </AreaChart>
-                  <LineChart fx:id="speedChart" minHeight="100.0">
-                    <xAxis>
-                      <CategoryAxis side="BOTTOM" />
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis side="LEFT" />
-                    </yAxis>
-                  </LineChart>
-                  <LineChart fx:id="hrChart" minHeight="100.0">
-                     <xAxis>
-                        <CategoryAxis side="BOTTOM" />
-                     </xAxis>
-                     <yAxis>
-                        <NumberAxis side="LEFT" />
-                     </yAxis>
-                  </LineChart>
-                  <LineChart fx:id="cadenceChart" minHeight="100.0">
-                     <xAxis>
-                        <CategoryAxis side="BOTTOM" />
-                     </xAxis>
-                     <yAxis>
-                        <NumberAxis side="LEFT" />
-                     </yAxis>
-                  </LineChart>
-               </children>
-            </VBox>
-         </content>
-      </Tab>
-      <Tab fx:id="tabSettings" text="%tab.settings">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-        </content>
-      </Tab>
-   </tabs>
-</JFXTabPane>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </VBox>
+               </content>
+            </Tab>
+            <Tab fx:id="tabSettings" text="%tab.settings">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+         </tabs>
+      </JFXTabPane>
+   </children>
+</AnchorPane>

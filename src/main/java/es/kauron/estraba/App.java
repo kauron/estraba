@@ -24,6 +24,7 @@
 
 package es.kauron.estraba;
 
+import es.kauron.estraba.controller.DashboardController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -56,5 +57,6 @@ public class App extends Application {
         stage.setScene(new Scene(root));
         stage.setResizable(true);
         stage.show();
+        loader.<DashboardController>getController().postinit();
     }
 }
