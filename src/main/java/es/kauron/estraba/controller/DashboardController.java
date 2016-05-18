@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
@@ -125,10 +126,17 @@ public class DashboardController implements Initializable {
 
         // populate charts
         ObservableList<Chunk> chunks = trackData.getChunks();
+        XYChart.Series<Number, Number> elevationChartData = new XYChart.Series<>();
+        XYChart.Series<Number, Number> speedChartData = new XYChart.Series<>();
+        XYChart.Series<Number, Number> hrChartData = new XYChart.Series<>();
+        XYChart.Series<Number, Number> cadenceChartData = new XYChart.Series<>();
         double lastDistance = Double.MIN_VALUE;
-        for (Chunk chunk : chunks) {
+        for (int i = 0; i < chunks.size(); i++) {
+            //map
             //elevationChart (range min-max+10)
+            elevationChartData.getData().add(new XYChart.Data<>(chunk.getDistance(), chunk.getAscent()));
             //speedChart (range 0-max+10)
+            speedChartData.getData().add(new XYChart.Data<>(chunk.getDistance(), chunk.getAscent()));
             //hrChart (range 30-200)
             //cadenceChart (range 0-200 (rollapalluza))
         }
