@@ -2,6 +2,7 @@ package es.kauron.estraba.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSnackbar;
+import com.lynden.gmapsfx.GoogleMapView;
 import es.kauron.estraba.App;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -122,8 +123,8 @@ public class DashboardController implements Initializable {
     @FXML
     private Tab tabMap;
 
-    //@FXML
-    //private GoogleMapView mapView;
+    @FXML
+    private GoogleMapView mapView;
 
     @FXML
     private JFXButton elevationButton;
@@ -160,6 +161,7 @@ public class DashboardController implements Initializable {
 
     private JFXSnackbar snackbar;
     private final double DISTANCE_EPSILON = 10;
+    private final double KILOMETER_CUTOFF = 10000;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -180,7 +182,6 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void onMapButton(ActionEvent event){
-        mapChart.getData().clear();
         switch (((JFXButton)event.getSource()).getId()) {
             case "elevationButton":
                 mapChart.setData(elevationChart.getData());
@@ -229,8 +230,13 @@ public class DashboardController implements Initializable {
                 + LocalTime.MIDNIGHT.plus(track.getTotalDuration())
                 .format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)));
 
-        valueDistance.setText(track.getTotalDistance()
-                + App.GENERAL_BUNDLE.getString("unit.m"));
+        if (track.getTotalDistance() > KILOMETER_CUTOFF) {
+            valueDistance.setText(String.format("%.2f", track.getTotalDistance() / 1000)
+                    + App.GENERAL_BUNDLE.getString("unit.km"));
+        } else {
+            valueDistance.setText(String.format("%.2f", track.getTotalDistance())
+                    + App.GENERAL_BUNDLE.getString("unit.m"));
+        }
 
         valueElevation.setText((int)(track.getTotalAscent() - track.getTotalDescend())
                 + App.GENERAL_BUNDLE.getString("unit.m"));
@@ -252,7 +258,6 @@ public class DashboardController implements Initializable {
         double currentDistance = 0.0;
         double currentHeight = 0.0;
         for (Chunk chunk : chunks) {
-            System.err.println(chunk.getDistance());
             currentDistance += chunk.getDistance();
             if (chunk.getDistance() < DISTANCE_EPSILON) continue;
             currentHeight += chunk.getAscent() - chunk.getDescend();
@@ -264,11 +269,11 @@ public class DashboardController implements Initializable {
             cadenceChartData.getData().add(new XYChart.Data<>(currentDistance, chunk.getAvgCadence()));
 
             String zone;
-            if (chunk.getAvgHeartRate() > 170) zone = "Zone 4";
-            else if (chunk.getAvgHeartRate() > 150) zone = "Zone 3";
-            else if (chunk.getAvgHeartRate() > 130) zone = "Zone 2";
-            else if (chunk.getAvgHeartRate() > 110) zone = "Zone 1";
-            else zone = "Zone 0";
+            if (chunk.getAvgHeartRate() > 170) zone = App.GENERAL_BUNDLE.getString("zone.anaerobic");
+            else if (chunk.getAvgHeartRate() > 150) zone = App.GENERAL_BUNDLE.getString("zone.threshold");
+            else if (chunk.getAvgHeartRate() > 130) zone = App.GENERAL_BUNDLE.getString("zone.tempo");
+            else if (chunk.getAvgHeartRate() > 110) zone = App.GENERAL_BUNDLE.getString("zone.endurance");
+            else zone = App.GENERAL_BUNDLE.getString("zone.recovery");
 
             boolean pieFound = false;
             for (PieChart.Data d : zoneChart.getData()){

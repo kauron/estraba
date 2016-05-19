@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTabPane?>
+<?import com.lynden.gmapsfx.GoogleMapView?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.AreaChart?>
@@ -61,7 +62,7 @@
                               <String fx:value=".estraba.dashboard.label.HR" />
                            </styleClass>
                         </Label>
-                        <Label fx:id="valueHRAvg" alignment="CENTER" maxWidth="1.7976931348623157E308" text="92 bpm" textAlignment="CENTER">
+                        <Label fx:id="valueHRAvg" alignment="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER">
                            <font>
                               <Font size="30.0" />
                            </font>
@@ -72,7 +73,7 @@
                            </styleClass>
                         </Label>
                         <HBox>
-                           <Label fx:id="valueHRMin" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="60bpm" HBox.hgrow="ALWAYS">
+                           <Label fx:id="valueHRMin" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                               <padding>
                                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                               </padding>
@@ -85,7 +86,7 @@
                                  <String fx:value=".estraba.dashboard.value.minhr" />
                               </styleClass>
                            </Label>
-                           <Label fx:id="valueHRMax" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" text="100bpm" HBox.hgrow="ALWAYS">
+                           <Label fx:id="valueHRMax" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                               <padding>
                                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                               </padding>
@@ -118,7 +119,7 @@
                               <String fx:value=".estraba.dashboard.label.HR" />
                            </styleClass>
                         </Label>
-                        <Label fx:id="valueSpeedAvg" alignment="CENTER" maxWidth="1.7976931348623157E308" text="35 Km/h" textAlignment="CENTER">
+                        <Label fx:id="valueSpeedAvg" alignment="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER">
                            <font>
                               <Font size="30.0" />
                            </font>
@@ -128,7 +129,7 @@
                               <String fx:value=".estraba.dashboard.value.avgspeed" />
                            </styleClass>
                         </Label>
-                        <Label fx:id="valueSpeedMax" alignment="CENTER" maxWidth="1.7976931348623157E308" text="56 Km/h">
+                        <Label fx:id="valueSpeedMax" alignment="CENTER" maxWidth="1.7976931348623157E308">
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
@@ -160,7 +161,7 @@
                               <String fx:value=".estraba.dashboard.label.HR" />
                            </styleClass>
                         </Label>
-                        <Label fx:id="valueCadenceAvg" alignment="CENTER" maxWidth="1.7976931348623157E308" text="90 Hz" textAlignment="CENTER">
+                        <Label fx:id="valueCadenceAvg" alignment="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER">
                            <font>
                               <Font size="30.0" />
                            </font>
@@ -170,7 +171,7 @@
                               <String fx:value=".estraba.dashboard.value.avgcadence" />
                            </styleClass>
                         </Label>
-                        <Label fx:id="valueCadenceMax" alignment="CENTER" maxWidth="1.7976931348623157E308" text="152 Hz">
+                        <Label fx:id="valueCadenceMax" alignment="CENTER" maxWidth="1.7976931348623157E308">
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
@@ -191,7 +192,7 @@
                <VBox layoutX="15.0" layoutY="15.0" minHeight="360.0" minWidth="300.0" prefHeight="300.0">
                   <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="200.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                      <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
-                        <Label fx:id="valueDate" alignment="CENTER" layoutX="10.0" layoutY="97.0" maxWidth="1.7976931348623157E308" text="Wednesday, 18 May 2016">
+                        <Label fx:id="valueDate" alignment="CENTER" layoutX="10.0" layoutY="97.0" maxWidth="1.7976931348623157E308">
                            <padding>
                               <Insets left="5.0" right="5.0" top="5.0" />
                            </padding>
@@ -206,7 +207,7 @@
                               <Insets />
                            </VBox.margin>
                         </Label>
-                        <Label fx:id="valueTime" alignment="CENTER" layoutX="10.0" layoutY="30.0" maxWidth="1.7976931348623157E308" text="17:00:14">
+                        <Label fx:id="valueTime" alignment="CENTER" layoutX="10.0" layoutY="30.0" maxWidth="1.7976931348623157E308">
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" />
                            </padding>
@@ -218,7 +219,7 @@
                               <String fx:value=".estraba.dashboard.value.sub" />
                            </styleClass>
                         </Label>
-                        <Label fx:id="valueActiveTime" alignment="CENTER" maxWidth="1.7976931348623157E308" text="4:37:42" textAlignment="CENTER">
+                        <Label fx:id="valueActiveTime" alignment="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER">
                            <font>
                               <Font size="30.0" />
                            </font>
@@ -228,7 +229,7 @@
                               <String fx:value=".estraba.dashboard.value.activetime" />
                            </styleClass>
                         </Label>
-                        <Label fx:id="valueTotalTime" alignment="CENTER" maxWidth="1.7976931348623157E308" text="of 5:00:00">
+                        <Label fx:id="valueTotalTime" alignment="CENTER" maxWidth="1.7976931348623157E308">
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
@@ -260,7 +261,7 @@
                               <String fx:value=".estraba.dashboard.label.HR" />
                            </styleClass>
                         </Label>
-                        <Label fx:id="valueDistance" alignment="CENTER" maxWidth="1.7976931348623157E308" text="46714 m" textAlignment="CENTER">
+                        <Label fx:id="valueDistance" alignment="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER">
                            <font>
                               <Font size="30.0" />
                            </font>
@@ -289,7 +290,7 @@
                               <String fx:value=".estraba.dashboard.label.HR" />
                            </styleClass>
                         </Label>
-                        <Label fx:id="valueElevation" alignment="CENTER" maxWidth="1.7976931348623157E308" text="3166 m" textAlignment="CENTER">
+                        <Label fx:id="valueElevation" alignment="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER">
                            <font>
                               <Font size="30.0" />
                            </font>
@@ -300,7 +301,7 @@
                            </styleClass>
                         </Label>
                         <HBox>
-                           <Label fx:id="valueAscent" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="+ 2053m" HBox.hgrow="ALWAYS">
+                           <Label fx:id="valueAscent" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                               <padding>
                                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                               </padding>
@@ -313,7 +314,7 @@
                                  <String fx:value=".estraba.dashboard.value.ascent" />
                               </styleClass>
                            </Label>
-                           <Label fx:id="valueDescent" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" text="- 1113 m" HBox.hgrow="ALWAYS">
+                           <Label fx:id="valueDescent" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                               <padding>
                                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                               </padding>
@@ -353,7 +354,7 @@
             <padding>
                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
-            <!-- <GoogleMapView fx:id="mapView"/> -->
+            <GoogleMapView fx:id="mapView" VBox.vgrow="ALWAYS" />
             <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="128.0">
                <VBox>
                   <JFXButton fx:id="elevationButton" minHeight="-Infinity" minWidth="-Infinity" onAction="#onMapButton" prefHeight="32.0" prefWidth="32.0">
@@ -389,7 +390,7 @@
                      </VBox.margin>
                   </JFXButton>
                </VBox>
-               <LineChart fx:id="mapChart" HBox.hgrow="ALWAYS">
+               <LineChart fx:id="mapChart" animated="false" createSymbols="false" legendVisible="false" HBox.hgrow="ALWAYS">
                   <xAxis>
                      <NumberAxis side="BOTTOM" />
                   </xAxis>
@@ -405,7 +406,7 @@
             <padding>
                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
-            <AreaChart fx:id="elevationChart" minHeight="100.0">
+            <AreaChart fx:id="elevationChart" createSymbols="false" legendVisible="false" minHeight="100.0">
                <xAxis>
                   <NumberAxis side="BOTTOM" />
                </xAxis>
@@ -413,7 +414,7 @@
                   <NumberAxis side="LEFT" />
                </yAxis>
             </AreaChart>
-            <LineChart fx:id="speedChart" minHeight="100.0">
+            <LineChart fx:id="speedChart" createSymbols="false" legendVisible="false" minHeight="100.0">
                <xAxis>
                   <NumberAxis />
                </xAxis>
@@ -421,7 +422,7 @@
                   <NumberAxis side="LEFT" />
                </yAxis>
             </LineChart>
-            <LineChart fx:id="hrChart" minHeight="100.0">
+            <LineChart fx:id="hrChart" createSymbols="false" legendVisible="false" minHeight="100.0">
                <xAxis>
                   <NumberAxis side="BOTTOM" />
                </xAxis>
@@ -429,7 +430,7 @@
                   <NumberAxis side="LEFT" />
                </yAxis>
             </LineChart>
-            <LineChart fx:id="cadenceChart" minHeight="100.0">
+            <LineChart fx:id="cadenceChart" createSymbols="false" legendVisible="false" minHeight="100.0">
                <xAxis>
                   <NumberAxis side="BOTTOM" />
                </xAxis>
