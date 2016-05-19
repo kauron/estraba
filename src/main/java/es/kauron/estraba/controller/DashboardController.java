@@ -199,7 +199,6 @@ public class DashboardController implements Initializable, MapComponentInitializ
                 }
             }
             if (!pieFound) zoneChart.getData().add( new PieChart.Data(zone, 1) );
-            zoneChart.setStartAngle(90);
         }
 
         // populate the charts

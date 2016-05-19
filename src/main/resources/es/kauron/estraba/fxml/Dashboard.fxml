@@ -187,7 +187,7 @@
                      </VBox>
                   </HBox>
                </VBox>
-               <PieChart fx:id="zoneChart" labelsVisible="false" legendVisible="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="360.0" HBox.hgrow="ALWAYS">
+               <PieChart fx:id="zoneChart" labelsVisible="false" startAngle="90" legendVisible="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="360.0" HBox.hgrow="ALWAYS">
                </PieChart>
                <VBox layoutX="15.0" layoutY="15.0" minHeight="360.0" minWidth="300.0" prefHeight="300.0">
                   <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="200.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
