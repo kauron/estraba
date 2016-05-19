@@ -34,6 +34,7 @@ public class SplashController implements Initializable{
 
     @FXML
     void loadGPXFile(ActionEvent event) {
+
         buttonLoad.setVisible(false);
         labelWelcome.setVisible(false);
         spinner.setVisible(true);

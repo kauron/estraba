@@ -77,7 +77,7 @@ public class DashboardController implements Initializable, MapComponentInitializ
     private LineChart<Double, Double> speedChart, hrChart, cadenceChart, mapChart;
 
     private JFXSnackbar snackbar;
-    private static final double DISTANCE_EPSILON = 1e-6;
+    private static final double DISTANCE_EPSILON = 1E-6;
     private static final double KILOMETER_CUTOFF = 10000;
 
     @Override
@@ -130,9 +130,10 @@ public class DashboardController implements Initializable, MapComponentInitializ
         valueHRMin.setText(track.getMinHeartRate()
                 + App.GENERAL_BUNDLE.getString("unit.bpm"));
 
-        valueSpeedAvg.setText(String.format("%.2f", track.getAverageSpeed())
+        // speed is given as m/s
+        valueSpeedAvg.setText(String.format("%.2f", track.getAverageSpeed() * 3.6)
                 + App.GENERAL_BUNDLE.getString("unit.kmph"));
-        valueSpeedMax.setText(String.format("%.2f", track.getMaxSpeed())
+        valueSpeedMax.setText(String.format("%.2f", track.getMaxSpeed() * 3.6)
                 + App.GENERAL_BUNDLE.getString("unit.kmph"));
 
         valueCadenceAvg.setText(track.getAverageCadence()
@@ -168,8 +169,6 @@ public class DashboardController implements Initializable, MapComponentInitializ
         XYChart.Series<Double, Double> speedChartData = new XYChart.Series<>();
         XYChart.Series<Double, Double> hrChartData = new XYChart.Series<>();
         XYChart.Series<Double, Double> cadenceChartData = new XYChart.Series<>();
-        // MVCArray pathArray = new MVCArray();
-
 
         // traverse the chunks
         ObservableList<Chunk> chunks = track.getChunks();
@@ -180,9 +179,8 @@ public class DashboardController implements Initializable, MapComponentInitializ
             if (chunk.getDistance() < DISTANCE_EPSILON) continue;
             currentHeight += chunk.getAscent() - chunk.getDescend();
 
-            // pathArray.push(new LatLong(chunk.getLastPoint().getLatitude(), chunk.getLastPoint().getLongitude()));
             elevationChartData.getData().add(new XYChart.Data<>(currentDistance, currentHeight));
-            speedChartData.getData().add(new XYChart.Data<>(currentDistance, chunk.getSpeed()));
+            speedChartData.getData().add(new XYChart.Data<>(currentDistance, chunk.getSpeed()*3.6)); // m/s
             hrChartData.getData().add(new XYChart.Data<>(currentDistance, chunk.getAvgHeartRate()));
             cadenceChartData.getData().add(new XYChart.Data<>(currentDistance, chunk.getAvgCadence()));
 
@@ -210,8 +208,7 @@ public class DashboardController implements Initializable, MapComponentInitializ
         hrChart.getData().add(hrChartData);
         cadenceChart.getData().add(cadenceChartData);
 
-        // populate and render the map
-        chunks = track.getChunks();
+        //initialize map
         mapView.addMapInializedListener(this);
     }
 
