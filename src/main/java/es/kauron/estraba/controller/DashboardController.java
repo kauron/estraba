@@ -178,6 +178,8 @@ public class DashboardController implements Initializable {
         imgDate.setImage(new Image(App.class.getResourceAsStream("img/date.png")));
         imgDistance.setImage(new Image(App.class.getResourceAsStream("img/distance.png")));
         imgElevation.setImage(new Image(App.class.getResourceAsStream("img/elevation.png")));
+
+        snackbar = new JFXSnackbar();
     }
 
     @FXML
@@ -199,7 +201,6 @@ public class DashboardController implements Initializable {
     }
 
     public void postinit() {
-        snackbar = new JFXSnackbar();
         snackbar.registerSnackbarContainer(root);
         try {load();} catch (JAXBException e) {e.printStackTrace();}
     }
@@ -225,10 +226,10 @@ public class DashboardController implements Initializable {
         valueDate.setText(track.getStartTime().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)));
         valueTime.setText(track.getStartTime().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)));
         valueActiveTime.setText(LocalTime.MIDNIGHT.plus(track.getMovingTime())
-                .format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)));
+                .format(DateTimeFormatter.ofPattern("HH:mm:ss")));
         valueTotalTime.setText(App.GENERAL_BUNDLE.getString("time.of")
                 + LocalTime.MIDNIGHT.plus(track.getTotalDuration())
-                .format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)));
+                .format(DateTimeFormatter.ofPattern("HH:mm:ss")));
 
         if (track.getTotalDistance() > KILOMETER_CUTOFF) {
             valueDistance.setText(String.format("%.2f", track.getTotalDistance() / 1000)
@@ -256,7 +257,7 @@ public class DashboardController implements Initializable {
         // traverse the chunks
         ObservableList<Chunk> chunks = track.getChunks();
         double currentDistance = 0.0;
-        double currentHeight = 0.0;
+        double currentHeight = chunks.get(0).getFirstPoint().getElevation();
         for (Chunk chunk : chunks) {
             currentDistance += chunk.getDistance();
             if (chunk.getDistance() < DISTANCE_EPSILON) continue;

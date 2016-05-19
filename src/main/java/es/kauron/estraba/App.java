@@ -33,6 +33,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.util.ResourceBundle;
+
 import static java.util.ResourceBundle.getBundle;
 
 /**
@@ -52,10 +53,12 @@ public class App extends Application {
         FXMLLoader loader = new FXMLLoader(
                 App.class.getResource("fxml/Dashboard.fxml"), GENERAL_BUNDLE);
         Parent root = loader.load();
+
         stage.getIcons().add(new Image(App.class.getResource("img/icon.png").toString()));
-        stage.setTitle("ESTRABA");
+        stage.setTitle(GENERAL_BUNDLE.getString("app.title"));
+        stage.setResizable(false);
         stage.setScene(new Scene(root));
-        stage.setResizable(true);
+
         stage.show();
         loader.<DashboardController>getController().postinit();
     }
