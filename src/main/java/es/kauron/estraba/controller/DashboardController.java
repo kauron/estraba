@@ -2,12 +2,6 @@ package es.kauron.estraba.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSnackbar;
-import com.lynden.gmapsfx.GoogleMapView;
-import com.lynden.gmapsfx.javascript.object.GoogleMap;
-import com.lynden.gmapsfx.javascript.object.LatLong;
-import com.lynden.gmapsfx.javascript.object.MVCArray;
-import com.lynden.gmapsfx.shapes.Polyline;
-import com.lynden.gmapsfx.shapes.PolylineOptions;
 import es.kauron.estraba.App;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -128,8 +122,8 @@ public class DashboardController implements Initializable {
     @FXML
     private Tab tabMap;
 
-    @FXML
-    private GoogleMapView mapView;
+    //@FXML
+    //private GoogleMapView mapView;
 
     @FXML
     private JFXButton elevationButton;
@@ -144,25 +138,28 @@ public class DashboardController implements Initializable {
     private JFXButton cadenceButton;
 
     @FXML
+    private LineChart<Double, Double> mapChart;
+
+    @FXML
     private Tab tabGraph;
 
     @FXML
-    private AreaChart<Number, Number> elevationChart;
+    private AreaChart<Double, Double> elevationChart;
 
     @FXML
-    private LineChart<Number, Number> speedChart;
+    private LineChart<Double, Double> speedChart;
 
     @FXML
-    private LineChart<Number, Number> hrChart;
+    private LineChart<Double, Double> hrChart;
 
     @FXML
-    private LineChart<Number, Number> cadenceChart;
+    private LineChart<Double, Double> cadenceChart;
 
     @FXML
     private Tab tabSettings;
 
     private JFXSnackbar snackbar;
-    private final double DISTANCE_EPSILON = 1;
+    private final double DISTANCE_EPSILON = 10;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -179,12 +176,25 @@ public class DashboardController implements Initializable {
         imgDate.setImage(new Image(App.class.getResourceAsStream("img/date.png")));
         imgDistance.setImage(new Image(App.class.getResourceAsStream("img/distance.png")));
         imgElevation.setImage(new Image(App.class.getResourceAsStream("img/elevation.png")));
-
     }
 
     @FXML
     private void onMapButton(ActionEvent event){
-        System.out.println(((JFXButton)event.getSource()).getId());
+        mapChart.getData().clear();
+        switch (((JFXButton)event.getSource()).getId()) {
+            case "elevationButton":
+                mapChart.setData(elevationChart.getData());
+                break;
+            case "speedButton":
+                mapChart.setData(speedChart.getData());
+                break;
+            case "hrButton":
+                mapChart.setData(hrChart.getData());
+                break;
+            case "cadenceButton":
+                mapChart.setData(cadenceChart.getData());
+                break;
+        }
     }
 
     public void postinit() {
@@ -230,24 +240,44 @@ public class DashboardController implements Initializable {
                 + App.GENERAL_BUNDLE.getString("unit.m"));
 
         // create charts data
-        XYChart.Series<Number, Number> elevationChartData = new XYChart.Series<>();
-        XYChart.Series<Number, Number> speedChartData = new XYChart.Series<>();
-        XYChart.Series<Number, Number> hrChartData = new XYChart.Series<>();
-        XYChart.Series<Number, Number> cadenceChartData = new XYChart.Series<>();
-        MVCArray pathArray = new MVCArray();
+        XYChart.Series<Double, Double> elevationChartData = new XYChart.Series<>();
+        XYChart.Series<Double, Double> speedChartData = new XYChart.Series<>();
+        XYChart.Series<Double, Double> hrChartData = new XYChart.Series<>();
+        XYChart.Series<Double, Double> cadenceChartData = new XYChart.Series<>();
+        // MVCArray pathArray = new MVCArray();
+
 
         // traverse the chunks
         ObservableList<Chunk> chunks = track.getChunks();
         double currentDistance = 0.0;
+        double currentHeight = 0.0;
         for (Chunk chunk : chunks) {
+            System.err.println(chunk.getDistance());
             currentDistance += chunk.getDistance();
             if (chunk.getDistance() < DISTANCE_EPSILON) continue;
+            currentHeight += chunk.getAscent() - chunk.getDescend();
 
-            pathArray.push(new LatLong(chunk.getLastPoint().getLatitude(), chunk.getLastPoint().getLongitude()));
-            elevationChartData.getData().add(new XYChart.Data<>(currentDistance, chunk.getAscent()));
+            // pathArray.push(new LatLong(chunk.getLastPoint().getLatitude(), chunk.getLastPoint().getLongitude()));
+            elevationChartData.getData().add(new XYChart.Data<>(currentDistance, currentHeight));
             speedChartData.getData().add(new XYChart.Data<>(currentDistance, chunk.getSpeed()));
             hrChartData.getData().add(new XYChart.Data<>(currentDistance, chunk.getAvgHeartRate()));
             cadenceChartData.getData().add(new XYChart.Data<>(currentDistance, chunk.getAvgCadence()));
+
+            String zone;
+            if (chunk.getAvgHeartRate() > 170) zone = "Zone 4";
+            else if (chunk.getAvgHeartRate() > 150) zone = "Zone 3";
+            else if (chunk.getAvgHeartRate() > 130) zone = "Zone 2";
+            else if (chunk.getAvgHeartRate() > 110) zone = "Zone 1";
+            else zone = "Zone 0";
+
+            boolean pieFound = false;
+            for (PieChart.Data d : zoneChart.getData()){
+                if (d.getName().equals(zone)) {
+                    pieFound = true;
+                    d.setPieValue(d.getPieValue() + 1);
+                }
+            }
+            if (!pieFound) zoneChart.getData().add( new PieChart.Data(zone, 1) );
         }
 
         // populate the charts
@@ -257,13 +287,13 @@ public class DashboardController implements Initializable {
         cadenceChart.getData().add(cadenceChartData);
 
         // populate and render the map
-        GoogleMap map = mapView.createMap();
-        map.addMapShape(new Polyline(
-                new PolylineOptions()
-                        .path(pathArray)
-                        .strokeColor("red")
-                        .strokeWeight(2))
-        );
+        //GoogleMap map = mapView.createMap();
+        //map.addMapShape(new Polyline(
+        //        new PolylineOptions()
+        //                .path(pathArray)
+        //                .strokeColor("red")
+        //                .strokeWeight(2))
+        //);
 
     }
 
@@ -282,9 +312,9 @@ public class DashboardController implements Initializable {
 
         if (gpx != null) {
             loadTrack(new TrackData(new Track(gpx.getTrk().get(0))));
-            snackbar.show("GPX file: " + name + "successfully loaded", 3000);
+            //snackbar.show("GPX file: " + name + "successfully loaded", 3000);
         } else {
-            snackbar.show("Error loading GPX file: " + name, 3000);
+            //snackbar.show("Error loading GPX file: " + name, 3000);
         }
     }
 
