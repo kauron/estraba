@@ -3,6 +3,10 @@ package es.kauron.estraba.controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSnackbar;
 import com.lynden.gmapsfx.GoogleMapView;
+import com.lynden.gmapsfx.MapComponentInitializedListener;
+import com.lynden.gmapsfx.javascript.object.*;
+import com.lynden.gmapsfx.shapes.Polyline;
+import com.lynden.gmapsfx.shapes.PolylineOptions;
 import es.kauron.estraba.App;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -40,128 +44,41 @@ import java.util.ResourceBundle;
  * Created by baudlord on 5/17/16.
  */
 
-public class DashboardController implements Initializable {
+public class DashboardController implements Initializable, MapComponentInitializedListener {
 
     @FXML
     private AnchorPane root;
 
     @FXML
-    private Tab tabDashboard;
+    private Tab tabDashboard, tabMap, tabGraph, tabSettings;
 
     @FXML
-    private Label labelMotivationUpper;
+    private ImageView imgHR, imgSpeed, imgCadence, imgDate, imgDistance, imgElevation;
 
     @FXML
-    private ImageView imgHR;
-
-    @FXML
-    private Label valueHRAvg;
-
-    @FXML
-    private Label valueHRMin;
-
-    @FXML
-    private Label valueHRMax;
-
-    @FXML
-    private ImageView imgSpeed;
-
-    @FXML
-    private Label valueSpeedAvg;
-
-    @FXML
-    private Label valueSpeedMax;
-
-    @FXML
-    private ImageView imgCadence;
-
-    @FXML
-    private Label valueCadenceAvg;
-
-    @FXML
-    private Label valueCadenceMax;
+    private Label valueHRAvg, valueHRMin, valueHRMax, valueSpeedAvg, valueSpeedMax, valueCadenceAvg, valueCadenceMax,
+            valueDate, valueTime, valueActiveTime, valueTotalTime, valueDistance, valueElevation, labelMotivationUpper,
+            valueAscent, valueDescent, labelMotivatorLower;
 
     @FXML
     private PieChart zoneChart;
 
     @FXML
-    private Label valueDate;
-
-    @FXML
-    private Label valueTime;
-
-    @FXML
-    private Label valueActiveTime;
-
-    @FXML
-    private Label valueTotalTime;
-
-    @FXML
-    private ImageView imgDate;
-
-    @FXML
-    private Label valueDistance;
-
-    @FXML
-    private ImageView imgDistance;
-
-    @FXML
-    private Label valueElevation;
-
-    @FXML
-    private Label valueAscent;
-
-    @FXML
-    private Label valueDescent;
-
-    @FXML
-    private ImageView imgElevation;
-
-    @FXML
-    private Label labelMotivationLower;
-
-    @FXML
-    private Tab tabMap;
-
-    @FXML
     private GoogleMapView mapView;
+    private TrackData track;
 
     @FXML
-    private JFXButton elevationButton;
-
-    @FXML
-    private JFXButton speedButton;
-
-    @FXML
-    private JFXButton hrButton;
-
-    @FXML
-    private JFXButton cadenceButton;
-
-    @FXML
-    private LineChart<Double, Double> mapChart;
-
-    @FXML
-    private Tab tabGraph;
+    private JFXButton elevationButton, speedButton, hrButton, cadenceButton;
 
     @FXML
     private AreaChart<Double, Double> elevationChart;
 
     @FXML
-    private LineChart<Double, Double> speedChart;
-
-    @FXML
-    private LineChart<Double, Double> hrChart;
-
-    @FXML
-    private LineChart<Double, Double> cadenceChart;
-
-    @FXML
-    private Tab tabSettings;
+    private LineChart<Double, Double> speedChart, hrChart, cadenceChart, mapChart;
 
     private JFXSnackbar snackbar;
-    private final double DISTANCE_EPSILON = 10;
-    private final double KILOMETER_CUTOFF = 10000;
+    private static final double DISTANCE_EPSILON = 1e-6;
+    private static final double KILOMETER_CUTOFF = 10000;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -284,6 +201,7 @@ public class DashboardController implements Initializable {
                 }
             }
             if (!pieFound) zoneChart.getData().add( new PieChart.Data(zone, 1) );
+            zoneChart.setStartAngle(90);
         }
 
         // populate the charts
@@ -293,19 +211,13 @@ public class DashboardController implements Initializable {
         cadenceChart.getData().add(cadenceChartData);
 
         // populate and render the map
-        //GoogleMap map = mapView.createMap();
-        //map.addMapShape(new Polyline(
-        //        new PolylineOptions()
-        //                .path(pathArray)
-        //                .strokeColor("red")
-        //                .strokeWeight(2))
-        //);
-
+        chunks = track.getChunks();
+        mapView.addMapInializedListener(this);
     }
 
-    @FXML
     private void load() throws JAXBException {
         FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("estraba files", "*.gpx"));
         File file = fileChooser.showOpenDialog(root.getScene().getWindow());
         if (file == null) return;
 
@@ -317,12 +229,65 @@ public class DashboardController implements Initializable {
         GpxType gpx = (GpxType) jaxbElement.getValue();
 
         if (gpx != null) {
-            loadTrack(new TrackData(new Track(gpx.getTrk().get(0))));
-            //snackbar.show("GPX file: " + name + "successfully loaded", 3000);
+            track = new TrackData(new Track(gpx.getTrk().get(0)));
+            loadTrack(track);
+            snackbar.show("GPX file: " + name + "successfully loaded", 3000);
         } else {
-            //snackbar.show("Error loading GPX file: " + name, 3000);
+            snackbar.show("Error loading GPX file: " + name, 3000);
         }
     }
 
+    @Override
+    public void mapInitialized() {
+        System.err.println("mapInitialized begin with " + track.getNumPoints());
+
+        final double[] coord = new double[4];
+        coord[0] = Double.MIN_VALUE;
+        coord[1] = Double.MAX_VALUE;
+        coord[2] = Double.MIN_VALUE;
+        coord[3] = Double.MAX_VALUE;
+
+        MapOptions mapOptions = new MapOptions();
+        mapOptions.center(new LatLong(
+                        track.getChunks().get(track.getNumPoints() / 2).getFirstPoint().getLatitude(),
+                        track.getChunks().get(track.getNumPoints() / 2).getFirstPoint().getLongitude()))
+                .mapType(MapTypeIdEnum.TERRAIN)
+                .overviewMapControl(true)
+                .panControl(false)
+                .rotateControl(false)
+                .scaleControl(true)
+                .streetViewControl(false)
+                .zoomControl(false)
+                .zoom(10);
+
+        GoogleMap map = mapView.createMap(mapOptions);
+
+        //Add a marker to the map
+        MVCArray pathArray = new MVCArray();
+        System.err.println("mapInitialized pathArray created");
+        track.getChunks().forEach(chunk -> {
+            double lat = chunk.getFirstPoint().getLatitude();
+            double lon = chunk.getFirstPoint().getLongitude();
+            coord[0] = Math.max(lat, coord[0]);
+            coord[1] = Math.min(lat, coord[1]);
+            coord[2] = Math.max(lon, coord[2]);
+            coord[3] = Math.min(lon, coord[3]);
+            pathArray.push(new LatLong(lat, lon));
+        });
+        pathArray.push(new LatLong(track.getChunks().get(track.getNumPoints() - 1).getLastPoint().getLatitude(),
+                track.getChunks().get(track.getNumPoints() - 1).getLastPoint().getLongitude()));
+        System.err.println("mapInitialized chunks added");
+        map.addMapShape(new Polyline(
+                new PolylineOptions()
+                        .path(pathArray)
+                        .strokeColor("red")
+                        .strokeWeight(2)
+                        .visible(true))
+        );
+        System.err.println("mapInitialized end");
+        System.err.printf("Average coords: %.2fN, %.2S, %.2fE, %.2fW", coord[0], coord[1], coord[2], coord[3]);
+        mapView.setCenter((coord[0] + coord[1]) / 2, (coord[2] + coord[3]) / 2);
+//        map.fitBounds(new LatLongBounds(new LatLong(coord[1], coord[3]), new LatLong(coord[0], coord[2])));
+    }
 }
 
