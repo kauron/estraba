@@ -239,55 +239,84 @@ public class DashboardController implements Initializable, MapComponentInitializ
 
     @Override
     public void mapInitialized() {
-        System.err.println("mapInitialized begin with " + track.getNumPoints());
-
+        // When the JS init is done
+        final int N = 0, S = 1, E = 2, W = 3;
         final double[] coord = new double[4];
         coord[0] = Double.MIN_VALUE;
         coord[1] = Double.MAX_VALUE;
         coord[2] = Double.MIN_VALUE;
         coord[3] = Double.MAX_VALUE;
 
-        MapOptions mapOptions = new MapOptions();
-        mapOptions.center(new LatLong(
-                        track.getChunks().get(track.getNumPoints() / 2).getFirstPoint().getLatitude(),
-                        track.getChunks().get(track.getNumPoints() / 2).getFirstPoint().getLongitude()))
+        // Create a new map with the appropriate options
+        GoogleMap map = mapView.createMap(new MapOptions()
+                .center(new LatLong(0.0, 0.0))
                 .mapType(MapTypeIdEnum.TERRAIN)
                 .overviewMapControl(true)
                 .panControl(false)
                 .rotateControl(false)
                 .scaleControl(true)
                 .streetViewControl(false)
-                .zoomControl(false)
-                .zoom(10);
+                .zoomControl(true)
+                .zoom(0)
+        );
 
-        GoogleMap map = mapView.createMap(mapOptions);
-
-        //Add a marker to the map
+        // Prepare an array with LatLong objects
         MVCArray pathArray = new MVCArray();
-        System.err.println("mapInitialized pathArray created");
+        pathArray.push(new LatLong( // first step of the route
+                track.getChunks().get(0).getFirstPoint().getLatitude(),
+                track.getChunks().get(0).getFirstPoint().getLongitude()
+        ));
         track.getChunks().forEach(chunk -> {
-            double lat = chunk.getFirstPoint().getLatitude();
-            double lon = chunk.getFirstPoint().getLongitude();
-            coord[0] = Math.max(lat, coord[0]);
-            coord[1] = Math.min(lat, coord[1]);
-            coord[2] = Math.max(lon, coord[2]);
-            coord[3] = Math.min(lon, coord[3]);
+            double lat = chunk.getLastPoint().getLatitude();
+            double lon = chunk.getLastPoint().getLongitude();
+            coord[N] = Math.max(lat, coord[N]);
+            coord[S] = Math.min(lat, coord[S]);
+            coord[E] = Math.max(lon, coord[E]);
+            coord[W] = Math.min(lon, coord[W]);
             pathArray.push(new LatLong(lat, lon));
         });
-        pathArray.push(new LatLong(track.getChunks().get(track.getNumPoints() - 1).getLastPoint().getLatitude(),
-                track.getChunks().get(track.getNumPoints() - 1).getLastPoint().getLongitude()));
-        System.err.println("mapInitialized chunks added");
-        map.addMapShape(new Polyline(
-                new PolylineOptions()
-                        .path(pathArray)
-                        .strokeColor("red")
-                        .strokeWeight(2)
-                        .visible(true))
-        );
-        System.err.println("mapInitialized end");
-        System.err.printf("Average coords: %.2fN, %.2S, %.2fE, %.2fW", coord[0], coord[1], coord[2], coord[3]);
-        mapView.setCenter((coord[0] + coord[1]) / 2, (coord[2] + coord[3]) / 2);
-//        map.fitBounds(new LatLongBounds(new LatLong(coord[1], coord[3]), new LatLong(coord[0], coord[2])));
+        // Create and add the polyline using the array
+        // This polyline displays instantly with no problem
+        // TODO: add color with PolylineOptions.strokeColor("#ffff00") to match the color schemes of the app
+        // When using that method, the line does not load properly, it needs an update to the zoom to show up.
+        map.addMapShape(new Polyline(new PolylineOptions().path(pathArray)));
+        // Adjust the map to the correct center and zoom
+        map.fitBounds(new LatLongBounds(
+                new LatLong(coord[S], coord[W]),
+                new LatLong(coord[N], coord[E])
+        ));
+        map.setZoom(getBoundsZoomLevel(coord, mapView.getHeight(), mapView.getWidth()));
+        // Print some debug info
+        System.err.printf("Bound to coords: %.2fN, %.2S, %.2fE, %.2fW\n", coord[N], coord[S], coord[E], coord[W]);
+        System.err.printf("Selected zoom: %d\n", map.getZoom());
+    }
+
+    /**
+     * Method to compute properly the amount of zoom in a GMap
+     * Many thanks to <a href=http://stackoverflow.com/a/13274361>http://stackoverflow.com/a/13274361</a>
+     * @param bound Array with coordinates bounds [N, S, E, W]
+     * @return Zoom from 0 to 21
+     */
+    private int getBoundsZoomLevel(double[] bound, double mapHeight, double mapWidth) {
+        double latFraction = (latRad(bound[0]) - latRad(bound[1])) / Math.PI;
+
+        double lngDiff = bound[2] - bound[3];
+        double lngFraction = ((lngDiff < 0) ? (lngDiff + 360) : lngDiff) / 360;
+
+        double latZoom = zoom(mapHeight, 256, latFraction);
+        double lngZoom = zoom(mapWidth, 256, lngFraction);
+
+        return (int) Math.min(Math.min(latZoom, lngZoom), 21);
+    }
+
+    private double zoom(double mapPx, int worldPx, double fraction) {
+        return Math.floor(Math.log(mapPx / worldPx / fraction) / Math.log(2));
+    }
+
+    private double latRad(double lat) {
+        double sin = Math.sin(lat * Math.PI / 180);
+        double radX2 = Math.log((1 + sin) / (1 - sin)) / 2;
+        return Math.max(Math.min(radX2, Math.PI), -Math.PI) / 2;
     }
 }
 
