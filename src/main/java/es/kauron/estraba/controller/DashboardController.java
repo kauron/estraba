@@ -2,12 +2,14 @@ package es.kauron.estraba.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSnackbar;
+import com.jfoenix.controls.JFXSpinner;
 import com.lynden.gmapsfx.GoogleMapView;
 import com.lynden.gmapsfx.MapComponentInitializedListener;
 import com.lynden.gmapsfx.javascript.object.*;
 import com.lynden.gmapsfx.shapes.Polyline;
 import com.lynden.gmapsfx.shapes.PolylineOptions;
 import es.kauron.estraba.App;
+import es.kauron.estraba.model.DataBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,28 +17,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.FileChooser;
 import jgpx.model.analysis.Chunk;
-import jgpx.model.analysis.TrackData;
-import jgpx.model.gpx.Track;
-import jgpx.model.jaxb.GpxType;
-import jgpx.model.jaxb.TrackPointExtensionT;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import java.io.File;
 import java.net.URL;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.ResourceBundle;
 
 /**
@@ -59,13 +47,15 @@ public class DashboardController implements Initializable, MapComponentInitializ
     private Label valueHRAvg, valueHRMin, valueHRMax, valueSpeedAvg, valueSpeedMax, valueCadenceAvg, valueCadenceMax,
             valueDate, valueTime, valueActiveTime, valueTotalTime, valueDistance, valueElevation, labelMotivationUpper,
             valueAscent, valueDescent, labelMotivatorLower;
+    @FXML
+    private JFXSpinner mapSpinner;
 
     @FXML
     private PieChart zoneChart;
 
     @FXML
     private GoogleMapView mapView;
-    private TrackData track;
+    private ObservableList<Chunk> chunks;
 
     @FXML
     private JFXButton elevationButton, speedButton, hrButton, cadenceButton;
@@ -77,8 +67,6 @@ public class DashboardController implements Initializable, MapComponentInitializ
     private LineChart<Double, Double> speedChart, hrChart, cadenceChart, mapChart;
 
     private JFXSnackbar snackbar;
-    private static final double DISTANCE_EPSILON = 1E-6;
-    private static final double KILOMETER_CUTOFF = 10000;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -117,121 +105,39 @@ public class DashboardController implements Initializable, MapComponentInitializ
         }
     }
 
-    public void postinit() {
+    void postInit(DataBundle bundle) {
         snackbar.registerSnackbarContainer(root);
-        try {load();} catch (JAXBException e) {e.printStackTrace();}
+        loadTrack(bundle);
     }
 
-    private void loadTrack(TrackData track) {
-        valueHRAvg.setText(track.getAverageHeartrate()
-                + App.GENERAL_BUNDLE.getString("unit.bpm"));
-        valueHRMax.setText(track.getMaxHeartrate()
-                + App.GENERAL_BUNDLE.getString("unit.bpm"));
-        valueHRMin.setText(track.getMinHeartRate()
-                + App.GENERAL_BUNDLE.getString("unit.bpm"));
+    private void loadTrack(DataBundle bundle) {
+        valueHRAvg.setText(bundle.HRAvg);
+        valueHRMax.setText(bundle.HRMax);
+        valueHRMin.setText(bundle.HRMin);
+        valueSpeedAvg.setText(bundle.speedAvg);
+        valueSpeedMax.setText(bundle.speedMax);
+        valueCadenceAvg.setText(bundle.cadenceAvg);
+        valueCadenceMax.setText(bundle.cadenceMax);
+        valueDate.setText(bundle.date);
+        valueTime.setText(bundle.time);
+        valueActiveTime.setText(bundle.activeTime);
+        valueTotalTime.setText(bundle.totalTime);
+        valueDistance.setText(bundle.distance);
+        valueElevation.setText(bundle.elevation);
+        valueAscent.setText(bundle.ascent);
+        valueDescent.setText(bundle.descent);
 
-        // speed is given as m/s
-        valueSpeedAvg.setText(String.format("%.2f", track.getAverageSpeed() * 3.6)
-                + App.GENERAL_BUNDLE.getString("unit.kmph"));
-        valueSpeedMax.setText(String.format("%.2f", track.getMaxSpeed() * 3.6)
-                + App.GENERAL_BUNDLE.getString("unit.kmph"));
-
-        valueCadenceAvg.setText(track.getAverageCadence()
-                + App.GENERAL_BUNDLE.getString("unit.hz"));
-        valueCadenceMax.setText(track.getMaxCadence()
-                + App.GENERAL_BUNDLE.getString("unit.hz"));
-
-        valueDate.setText(track.getStartTime().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)));
-        valueTime.setText(track.getStartTime().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)));
-        valueActiveTime.setText(LocalTime.MIDNIGHT.plus(track.getMovingTime())
-                .format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-        valueTotalTime.setText(App.GENERAL_BUNDLE.getString("time.of")
-                + LocalTime.MIDNIGHT.plus(track.getTotalDuration())
-                .format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-
-        if (track.getTotalDistance() > KILOMETER_CUTOFF) {
-            valueDistance.setText(String.format("%.2f", track.getTotalDistance() / 1000)
-                    + App.GENERAL_BUNDLE.getString("unit.km"));
-        } else {
-            valueDistance.setText(String.format("%.2f", track.getTotalDistance())
-                    + App.GENERAL_BUNDLE.getString("unit.m"));
-        }
-
-        valueElevation.setText((int)(track.getTotalAscent() - track.getTotalDescend())
-                + App.GENERAL_BUNDLE.getString("unit.m"));
-        valueAscent.setText((int)track.getTotalAscent()
-                + App.GENERAL_BUNDLE.getString("unit.m"));
-        valueDescent.setText((int)track.getTotalDescend()
-                + App.GENERAL_BUNDLE.getString("unit.m"));
-
-        // create charts data
-        XYChart.Series<Double, Double> elevationChartData = new XYChart.Series<>();
-        XYChart.Series<Double, Double> speedChartData = new XYChart.Series<>();
-        XYChart.Series<Double, Double> hrChartData = new XYChart.Series<>();
-        XYChart.Series<Double, Double> cadenceChartData = new XYChart.Series<>();
-
-        // traverse the chunks
-        ObservableList<Chunk> chunks = track.getChunks();
-        double currentDistance = 0.0;
-        double currentHeight = chunks.get(0).getFirstPoint().getElevation();
-        for (Chunk chunk : chunks) {
-            currentDistance += chunk.getDistance();
-            if (chunk.getDistance() < DISTANCE_EPSILON) continue;
-            currentHeight += chunk.getAscent() - chunk.getDescend();
-
-            elevationChartData.getData().add(new XYChart.Data<>(currentDistance, currentHeight));
-            speedChartData.getData().add(new XYChart.Data<>(currentDistance, chunk.getSpeed()*3.6)); // m/s
-            hrChartData.getData().add(new XYChart.Data<>(currentDistance, chunk.getAvgHeartRate()));
-            cadenceChartData.getData().add(new XYChart.Data<>(currentDistance, chunk.getAvgCadence()));
-
-            String zone;
-            if (chunk.getAvgHeartRate() > 170) zone = App.GENERAL_BUNDLE.getString("zone.anaerobic");
-            else if (chunk.getAvgHeartRate() > 150) zone = App.GENERAL_BUNDLE.getString("zone.threshold");
-            else if (chunk.getAvgHeartRate() > 130) zone = App.GENERAL_BUNDLE.getString("zone.tempo");
-            else if (chunk.getAvgHeartRate() > 110) zone = App.GENERAL_BUNDLE.getString("zone.endurance");
-            else zone = App.GENERAL_BUNDLE.getString("zone.recovery");
-
-            boolean pieFound = false;
-            for (PieChart.Data d : zoneChart.getData()){
-                if (d.getName().equals(zone)) {
-                    pieFound = true;
-                    d.setPieValue(d.getPieValue() + 1);
-                }
-            }
-            if (!pieFound) zoneChart.getData().add( new PieChart.Data(zone, 1) );
-        }
+        zoneChart.setData(bundle.pieData);
 
         // populate the charts
-        elevationChart.getData().add(elevationChartData);
-        speedChart.getData().add(speedChartData);
-        hrChart.getData().add(hrChartData);
-        cadenceChart.getData().add(cadenceChartData);
+        elevationChart.getData().add(bundle.elevationSeries);
+        speedChart.getData().add(bundle.speedSeries);
+        hrChart.getData().add(bundle.hrSeries);
+        cadenceChart.getData().add(bundle.cadenceSeries);
 
         //initialize map
+        chunks = bundle.chunks;
         mapView.addMapInializedListener(this);
-    }
-
-    private void load() throws JAXBException {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter(App.GENERAL_BUNDLE.getString("app.extension.filter.name"), "*.gpx"));
-        File file = fileChooser.showOpenDialog(root.getScene().getWindow());
-        if (file == null) return;
-
-        String name = file.getName();
-        JAXBContext jaxbContext = JAXBContext.newInstance(GpxType.class, TrackPointExtensionT.class);
-        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-        @SuppressWarnings("unchecked")
-        JAXBElement<Object> jaxbElement = (JAXBElement<Object>) unmarshaller.unmarshal(file);
-        GpxType gpx = (GpxType) jaxbElement.getValue();
-
-        if (gpx != null) {
-            track = new TrackData(new Track(gpx.getTrk().get(0)));
-            loadTrack(track);
-            snackbar.show("GPX file: " + name + "successfully loaded", 3000);
-        } else {
-            snackbar.show("Error loading GPX file: " + name, 3000);
-        }
     }
 
     @Override
@@ -260,10 +166,10 @@ public class DashboardController implements Initializable, MapComponentInitializ
         // Prepare an array with LatLong objects
         MVCArray pathArray = new MVCArray();
         pathArray.push(new LatLong( // first step of the route
-                track.getChunks().get(0).getFirstPoint().getLatitude(),
-                track.getChunks().get(0).getFirstPoint().getLongitude()
+                chunks.get(0).getFirstPoint().getLatitude(),
+                chunks.get(0).getFirstPoint().getLongitude()
         ));
-        track.getChunks().forEach(chunk -> {
+        chunks.forEach(chunk -> {
             double lat = chunk.getLastPoint().getLatitude();
             double lon = chunk.getLastPoint().getLongitude();
             coord[N] = Math.max(lat, coord[N]);
@@ -283,9 +189,8 @@ public class DashboardController implements Initializable, MapComponentInitializ
                 new LatLong(coord[N], coord[E])
         ));
         map.setZoom(getBoundsZoomLevel(coord, mapView.getHeight(), mapView.getWidth()));
-        // Print some debug info
-        System.err.printf("Bound to coords: %.2fN, %.2S, %.2fE, %.2fW\n", coord[N], coord[S], coord[E], coord[W]);
-        System.err.printf("Selected zoom: %d\n", map.getZoom());
+        mapView.setVisible(true);
+        mapSpinner.setVisible(false);
     }
 
     /**

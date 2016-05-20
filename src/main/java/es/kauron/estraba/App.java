@@ -24,7 +24,6 @@
 
 package es.kauron.estraba;
 
-import es.kauron.estraba.controller.DashboardController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -51,7 +50,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(
-                App.class.getResource("fxml/Dashboard.fxml"), GENERAL_BUNDLE);
+                App.class.getResource("fxml/Splash.fxml"), GENERAL_BUNDLE);
         Parent root = loader.load();
 
         stage.getIcons().add(new Image(App.class.getResource("img/icon.png").toString()));
@@ -59,7 +58,11 @@ public class App extends Application {
         stage.setResizable(false);
         stage.setScene(new Scene(root));
 
+        // Begin awesomewm code
+        stage.setMinHeight(500);
+        stage.setMinWidth(300);
+        stage.setResizable(false);
+        // End awesomewm code
         stage.show();
-        loader.<DashboardController>getController().postinit();
     }
 }
