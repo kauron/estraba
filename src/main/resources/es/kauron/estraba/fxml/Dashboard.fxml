@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXSpinner?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.lynden.gmapsfx.GoogleMapView?>
 <?import java.lang.String?>
@@ -15,6 +16,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -187,7 +189,7 @@
                      </VBox>
                   </HBox>
                </VBox>
-               <PieChart fx:id="zoneChart" labelsVisible="false" startAngle="90" legendVisible="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="360.0" HBox.hgrow="ALWAYS">
+               <PieChart fx:id="zoneChart" labelsVisible="false" legendVisible="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="360.0" startAngle="90" HBox.hgrow="ALWAYS">
                </PieChart>
                <VBox layoutX="15.0" layoutY="15.0" minHeight="360.0" minWidth="300.0" prefHeight="300.0">
                   <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="200.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
@@ -354,7 +356,12 @@
             <padding>
                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
-            <GoogleMapView fx:id="mapView" VBox.vgrow="ALWAYS" />
+            <StackPane prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <GoogleMapView fx:id="mapView" />
+                  <JFXSpinner fx:id="mapSpinner" />
+               </children>
+            </StackPane>
             <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="128.0">
                <VBox>
                   <JFXButton fx:id="elevationButton" minHeight="-Infinity" minWidth="-Infinity" onAction="#onMapButton" prefHeight="32.0" prefWidth="32.0">
