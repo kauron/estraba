@@ -213,7 +213,8 @@ public class DashboardController implements Initializable, MapComponentInitializ
 
     private void load() throws JAXBException {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("estraba files", "*.gpx"));
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter(App.GENERAL_BUNDLE.getString("app.extension.filter.name"), "*.gpx"));
         File file = fileChooser.showOpenDialog(root.getScene().getWindow());
         if (file == null) return;
 
