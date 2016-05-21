@@ -21,6 +21,7 @@
   ~ THE SOFTWARE.
   ~
   ~ If we meet some day, and you think this stuff is worth it, you can buy me a beer in return.
+  ~
   -->
 
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -127,6 +128,7 @@
                             <version>1.0</version>
                             <packaging>jar</packaging>
                                 <file>${basedir}/lib/jGPX.jar</file>
+                            <javadoc>${basedir}/lib/jGPX_javadoc.zip</javadoc>
                         </configuration>
                     </execution>
                 </executions>

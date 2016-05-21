@@ -1,26 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXSpinner?>
-<?import com.jfoenix.controls.JFXTabPane?>
-<?import com.lynden.gmapsfx.GoogleMapView?>
-<?import java.lang.String?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.AreaChart?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.chart.PieChart?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<!--
+  ~ Copyright (c) 2016 Jesús "baudlord" Vélez Palacios, Carlos "kauron" Santiago Galindo Jiménez
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in
+  ~ all copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  ~ THE SOFTWARE.
+  ~
+  ~ If we meet some day, and you think this stuff is worth it, you can buy me a beer in return.
+  ~
+  -->
 
-<AnchorPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.kauron.estraba.controller.DashboardController">
+<?import com.jfoenix.controls.*?>
+<?import com.lynden.gmapsfx.GoogleMapView?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="root" xmlns="http://javafx.com/javafx/8.0.76-ea"
+            fx:controller="es.kauron.estraba.controller.DashboardController">
    <JFXTabPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <Tab fx:id="tabDashboard" styleClass=".estraba.dashboard" text="%tab.dashboard">
          <VBox prefHeight="200.0" prefWidth="100.0">
@@ -49,7 +64,6 @@
                   </HBox.margin>
                   <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <ImageView fx:id="imgHR" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass=".estraba.dashboard.icon">
-                        <Image url="@../img/hr.png" />
                      </ImageView>
                      <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                         <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="%label.hr">
@@ -106,7 +120,6 @@
                   </HBox>
                   <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <ImageView fx:id="imgSpeed" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass=".estraba.dashboard.icon">
-                        <Image url="@../img/speed.png" />
                      </ImageView>
                      <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                         <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="%label.speed">
@@ -148,7 +161,6 @@
                   </HBox>
                   <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <ImageView fx:id="imgCadence" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass=".estraba.dashboard.icon">
-                        <Image url="@../img/cadence.png" />
                      </ImageView>
                      <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                         <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="%label.cadence">
@@ -246,7 +258,6 @@
                         </Label>
                      </VBox>
                      <ImageView fx:id="imgDate" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass=".estraba.dashboard.icon">
-                        <Image url="@../img/date.png" />
                      </ImageView>
                   </HBox>
                   <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="200.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
@@ -275,7 +286,6 @@
                         </Label>
                      </VBox>
                      <ImageView fx:id="imgDistance" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass=".estraba.dashboard.icon">
-                        <Image url="@../img/distance.png" />
                      </ImageView>
                   </HBox>
                   <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="200.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
@@ -332,7 +342,6 @@
                         </HBox>
                      </VBox>
                      <ImageView fx:id="imgElevation" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass=".estraba.dashboard.icon">
-                        <Image url="@../img/climb.png" />
                      </ImageView>
                   </HBox>
                </VBox>

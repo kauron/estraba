@@ -1,3 +1,28 @@
+/*
+ * Copyright (c) 2016 Jesús "baudlord" Vélez Palacios, Carlos "kauron" Santiago Galindo Jiménez
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * If we meet some day, and you think this stuff is worth it, you can buy me a beer in return.
+ *
+ */
+
 package es.kauron.estraba.model;
 
 import es.kauron.estraba.App;
@@ -30,17 +55,6 @@ public class DataBundle {
     public ObservableList<PieChart.Data> pieData;
     public ObservableList<Chunk> chunks;
 
-    public static DataBundle loadFrom(File file) throws Exception {
-        JAXBElement<Object> jaxbElement;
-        JAXBContext jaxbContext = JAXBContext.newInstance(GpxType.class, TrackPointExtensionT.class);
-        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-        jaxbElement = (JAXBElement<Object>) unmarshaller.unmarshal(file);
-        GpxType gpx = (GpxType) jaxbElement.getValue();
-
-        if (gpx == null) throw new Exception();
-        return new DataBundle(new TrackData(new Track(gpx.getTrk().get(0))));
-    }
-    
     private DataBundle(TrackData track) {
 
         HRAvg = track.getAverageHeartrate() + App.GENERAL_BUNDLE.getString("unit.bpm");
@@ -67,8 +81,8 @@ public class DataBundle {
         }
 
         elevation = (int)(track.getTotalAscent() - track.getTotalDescend()) + App.GENERAL_BUNDLE.getString("unit.m");
-        ascent = (int)track.getTotalAscent() + App.GENERAL_BUNDLE.getString("unit.m");
-        descent = (int)track.getTotalDescend() + App.GENERAL_BUNDLE.getString("unit.m");
+        ascent = "+ " + (int) track.getTotalAscent() + App.GENERAL_BUNDLE.getString("unit.m");
+        descent = "- " + (int) track.getTotalDescend() + App.GENERAL_BUNDLE.getString("unit.m");
 
         // traverse the chunks
         chunks = track.getChunks();
@@ -107,5 +121,16 @@ public class DataBundle {
             }
             if (!pieFound) pieData.add( new PieChart.Data(zone, 1) );
         }
+    }
+
+    public static DataBundle loadFrom(File file) throws Exception {
+        JAXBElement<Object> jaxbElement;
+        JAXBContext jaxbContext = JAXBContext.newInstance(GpxType.class, TrackPointExtensionT.class);
+        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+        jaxbElement = (JAXBElement<Object>) unmarshaller.unmarshal(file);
+        GpxType gpx = (GpxType) jaxbElement.getValue();
+
+        if (gpx == null) throw new Exception();
+        return new DataBundle(new TrackData(new Track(gpx.getTrk().get(0))));
     }
 }

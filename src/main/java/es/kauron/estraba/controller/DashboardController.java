@@ -1,7 +1,31 @@
+/*
+ * Copyright (c) 2016 Jesús "baudlord" Vélez Palacios, Carlos "kauron" Santiago Galindo Jiménez
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * If we meet some day, and you think this stuff is worth it, you can buy me a beer in return.
+ *
+ */
+
 package es.kauron.estraba.controller;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXSpinner;
 import com.lynden.gmapsfx.GoogleMapView;
 import com.lynden.gmapsfx.MapComponentInitializedListener;
@@ -66,8 +90,6 @@ public class DashboardController implements Initializable, MapComponentInitializ
     @FXML
     private LineChart<Double, Double> speedChart, hrChart, cadenceChart, mapChart;
 
-    private JFXSnackbar snackbar;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // populate map icons
@@ -83,8 +105,6 @@ public class DashboardController implements Initializable, MapComponentInitializ
         imgDate.setImage(new Image(App.class.getResourceAsStream("img/date.png")));
         imgDistance.setImage(new Image(App.class.getResourceAsStream("img/distance.png")));
         imgElevation.setImage(new Image(App.class.getResourceAsStream("img/elevation.png")));
-
-        snackbar = new JFXSnackbar();
     }
 
     @FXML
@@ -105,15 +125,11 @@ public class DashboardController implements Initializable, MapComponentInitializ
         }
     }
 
-    void postInit(DataBundle bundle) {
-        snackbar.registerSnackbarContainer(root);
-        loadTrack(bundle);
-    }
-
     private String randomMotivation() {
         return App.GENERAL_BUNDLE.getString("label.welcome");
     }
-    private void loadTrack(DataBundle bundle) {
+
+    public void load(DataBundle bundle) {
         valueHRAvg.setText(bundle.HRAvg);
         valueHRMax.setText(bundle.HRMax);
         valueHRMin.setText(bundle.HRMin);
