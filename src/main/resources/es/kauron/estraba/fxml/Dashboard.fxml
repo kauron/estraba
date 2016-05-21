@@ -61,7 +61,7 @@
                            </font>
                            <styleClass>
                               <String fx:value=".estraba.dashboard.label" />
-                              <String fx:value=".estraba.dashboard.label.HR" />
+                              <String fx:value=".estraba.dashboard.label.hr" />
                            </styleClass>
                         </Label>
                         <Label fx:id="valueHRAvg" alignment="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER">
@@ -118,7 +118,7 @@
                            </font>
                            <styleClass>
                               <String fx:value=".estraba.dashboard.label" />
-                              <String fx:value=".estraba.dashboard.label.HR" />
+                              <String fx:value=".estraba.dashboard.label.speed" />
                            </styleClass>
                         </Label>
                         <Label fx:id="valueSpeedAvg" alignment="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER">
@@ -160,7 +160,7 @@
                            </font>
                            <styleClass>
                               <String fx:value=".estraba.dashboard.label" />
-                              <String fx:value=".estraba.dashboard.label.HR" />
+                              <String fx:value=".estraba.dashboard.label.cadence" />
                            </styleClass>
                         </Label>
                         <Label fx:id="valueCadenceAvg" alignment="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER">
@@ -260,7 +260,7 @@
                            </font>
                            <styleClass>
                               <String fx:value=".estraba.dashboard.label" />
-                              <String fx:value=".estraba.dashboard.label.HR" />
+                              <String fx:value=".estraba.dashboard.label.distance" />
                            </styleClass>
                         </Label>
                         <Label fx:id="valueDistance" alignment="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER">
@@ -289,7 +289,7 @@
                            </font>
                            <styleClass>
                               <String fx:value=".estraba.dashboard.label" />
-                              <String fx:value=".estraba.dashboard.label.HR" />
+                              <String fx:value=".estraba.dashboard.label.elevation" />
                            </styleClass>
                         </Label>
                         <Label fx:id="valueElevation" alignment="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER">
@@ -356,7 +356,7 @@
             <padding>
                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
-            <StackPane prefHeight="150.0" prefWidth="200.0">
+            <StackPane prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS" >
                <children>
                   <GoogleMapView fx:id="mapView" />
                   <JFXSpinner fx:id="mapSpinner" />

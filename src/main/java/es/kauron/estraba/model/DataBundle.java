@@ -26,15 +26,11 @@ public class DataBundle {
     
     public String HRAvg, HRMax, HRMin, speedAvg, speedMax, cadenceAvg, cadenceMax;
     public String date, time, activeTime, totalTime, distance, elevation, ascent, descent;
-    public XYChart.Series<Double, Double> elevationSeries = new XYChart.Series<>(),
-            speedSeries = new XYChart.Series<>(),
-            hrSeries = new XYChart.Series<>(), 
-            cadenceSeries = new XYChart.Series<>();
-    public ObservableList<PieChart.Data> pieData = FXCollections.emptyObservableList();
+    public XYChart.Series<Double, Double> elevationSeries, speedSeries, hrSeries, cadenceSeries;
+    public ObservableList<PieChart.Data> pieData;
     public ObservableList<Chunk> chunks;
 
     public static DataBundle loadFrom(File file) throws Exception {
-        String name = file.getName();
         JAXBElement<Object> jaxbElement;
         JAXBContext jaxbContext = JAXBContext.newInstance(GpxType.class, TrackPointExtensionT.class);
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
@@ -46,8 +42,9 @@ public class DataBundle {
     }
     
     private DataBundle(TrackData track) {
+
         HRAvg = track.getAverageHeartrate() + App.GENERAL_BUNDLE.getString("unit.bpm");
-        HRMax = (track.getMaxHeartrate() + App.GENERAL_BUNDLE.getString("unit.bpm"));
+        HRMax = track.getMaxHeartrate() + App.GENERAL_BUNDLE.getString("unit.bpm");
         HRMin = track.getMinHeartRate() + App.GENERAL_BUNDLE.getString("unit.bpm");
 
         // speed is given as m/s
@@ -77,6 +74,13 @@ public class DataBundle {
         chunks = track.getChunks();
         double currentDistance = 0.0;
         double currentHeight = chunks.get(0).getFirstPoint().getElevation();
+
+        elevationSeries = new XYChart.Series<>();
+        cadenceSeries = new XYChart.Series<>();
+        hrSeries = new XYChart.Series<>();
+        speedSeries = new XYChart.Series<>();
+        pieData = FXCollections.observableArrayList();
+
         for (Chunk chunk : chunks) {
             currentDistance += chunk.getDistance();
             if (chunk.getDistance() < DISTANCE_EPSILON) continue;

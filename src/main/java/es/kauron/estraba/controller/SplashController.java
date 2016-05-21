@@ -50,8 +50,7 @@ public class SplashController implements Initializable{
     private File file;
 
     @FXML
-    private void loadGPXFile(ActionEvent event) {
-
+    private void loadGPXFile(ActionEvent event) throws Exception {
         buttonLoad.setVisible(false);
         labelWelcome.setVisible(false);
         spinner.setVisible(true);
@@ -59,40 +58,42 @@ public class SplashController implements Initializable{
         snackbar.show("Loading file", 5000);
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter(App.GENERAL_BUNDLE.getString("app.extension.filter.name"), "*.gpx"));
+                new FileChooser.ExtensionFilter(App.GENERAL_BUNDLE.getString("app.extension"), "*.gpx"));
         file = fileChooser.showOpenDialog(root.getScene().getWindow());
         if (file == null) {
             errorLoading();
             return;
         }
-        Task<DataBundle> task = new Task<DataBundle>() {
+
+        Task<DataBundle> t = new Task<DataBundle>() {
             @Override
             protected DataBundle call() throws Exception {
-                try {
-                    updateValue(DataBundle.loadFrom(file));
-                    succeeded();
-                } catch (IOException e) {
-                    updateValue(null);
-                    errorLoading();
-                }
-                return getValue();
+                DataBundle db = DataBundle.loadFrom(file);
+                System.out.println("done");
+                updateProgress(1, 1);
+                return db;
             }
         };
-        Thread t = new Thread(task);
-        t.setDaemon(true);
-        t.start();
-        task.setOnSucceeded(state -> {
-            DataBundle bundle = (DataBundle) state.getSource().getValue();
+
+       t.setOnSucceeded(ev -> {
+            DataBundle bundle = t.getValue();
             if (bundle == null) errorLoading();
             FXMLLoader loader = new FXMLLoader(
                     App.class.getResource("fxml/Dashboard.fxml"), App.GENERAL_BUNDLE);
             Parent parent = null;
             try {
                 parent = loader.load();
-            } catch (IOException e) {errorLoading();}
+            } catch (IOException e) {
+                errorLoading();
+            }
             loader.<DashboardController>getController().postInit(bundle);
             ((Stage) root.getScene().getWindow()).setScene(new Scene(parent));
         });
+
+        Thread th = new Thread(t);
+        th.setDaemon(true);
+        th.start();
+
     }
 
     @Override

@@ -110,6 +110,9 @@ public class DashboardController implements Initializable, MapComponentInitializ
         loadTrack(bundle);
     }
 
+    private String randomMotivation() {
+        return App.GENERAL_BUNDLE.getString("label.welcome");
+    }
     private void loadTrack(DataBundle bundle) {
         valueHRAvg.setText(bundle.HRAvg);
         valueHRMax.setText(bundle.HRMax);
@@ -126,7 +129,6 @@ public class DashboardController implements Initializable, MapComponentInitializ
         valueElevation.setText(bundle.elevation);
         valueAscent.setText(bundle.ascent);
         valueDescent.setText(bundle.descent);
-
         zoneChart.setData(bundle.pieData);
 
         // populate the charts
