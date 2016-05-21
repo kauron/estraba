@@ -65,32 +65,31 @@ public class SplashController implements Initializable{
             return;
         }
 
-        Task<DataBundle> t = new Task<DataBundle>() {
+        Thread th = new Thread(new Task<DataBundle>() {
             @Override
             protected DataBundle call() throws Exception {
                 DataBundle db = DataBundle.loadFrom(file);
-                System.out.println("done");
-                updateProgress(1, 1);
                 return db;
             }
-        };
 
-       t.setOnSucceeded(ev -> {
-            DataBundle bundle = t.getValue();
-            if (bundle == null) errorLoading();
-            FXMLLoader loader = new FXMLLoader(
-                    App.class.getResource("fxml/Dashboard.fxml"), App.GENERAL_BUNDLE);
-            Parent parent = null;
-            try {
-                parent = loader.load();
-            } catch (IOException e) {
-                errorLoading();
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                DataBundle bundle = getValue();
+                if (bundle == null) errorLoading();
+                FXMLLoader loader = new FXMLLoader(
+                        App.class.getResource("fxml/Dashboard.fxml"), App.GENERAL_BUNDLE);
+                Parent parent = null;
+                try {
+                    parent = loader.load();
+                    loader.<DashboardController>getController().postInit(bundle);
+                    ((Stage) root.getScene().getWindow()).setScene(new Scene(parent));
+                } catch (IOException e) {
+                    errorLoading();
+                }
             }
-            loader.<DashboardController>getController().postInit(bundle);
-            ((Stage) root.getScene().getWindow()).setScene(new Scene(parent));
         });
 
-        Thread th = new Thread(t);
         th.setDaemon(true);
         th.start();
 
