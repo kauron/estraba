@@ -40,6 +40,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -78,11 +80,6 @@ public class SplashController implements Initializable{
 
     @FXML
     private void loadGPXFile(ActionEvent event) throws Exception {
-        buttonLoad.setVisible(false);
-        labelWelcome.setVisible(false);
-        spinner.setVisible(true);
-        snackbar.registerSnackbarContainer(root);
-        snackbar.show("Loading file", 5000);
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter(App.GENERAL_BUNDLE.getString("app.extension"), "*.gpx"));
@@ -91,7 +88,15 @@ public class SplashController implements Initializable{
             errorLoading();
             return;
         }
+        loadGPXFile(file);
+    }
 
+    public void loadGPXFile(File file) {
+        buttonLoad.setVisible(false);
+        labelWelcome.setVisible(false);
+        spinner.setVisible(true);
+        snackbar.registerSnackbarContainer(root);
+        snackbar.show("Loading file", 5000);
         Thread th = new Thread(new Task<DataBundle>() {
             @Override
             protected DataBundle call() throws Exception {
@@ -114,11 +119,16 @@ public class SplashController implements Initializable{
                     errorLoading();
                 }
             }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                errorLoading();
+            }
         });
 
         th.setDaemon(true);
         th.start();
-
     }
 
     @Override
@@ -132,6 +142,31 @@ public class SplashController implements Initializable{
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
+        });
+
+        root.getScene().setOnDragOver(e -> {
+            Dragboard db = e.getDragboard();
+            if (db.hasFiles()) {
+                e.acceptTransferModes(TransferMode.COPY);
+            } else {
+                e.consume();
+            }
+        });
+
+        // Dropping over surface
+        root.getScene().setOnDragDropped(e -> {
+            Dragboard db = e.getDragboard();
+            boolean success = false;
+            if (db.hasFiles()) {
+                success = true;
+                String filePath = null;
+                for (File file : db.getFiles()) {
+                    filePath = file.getAbsolutePath();
+                    System.out.println(filePath);
+                }
+            }
+            e.setDropCompleted(success);
+            e.consume();
         });
     }
 

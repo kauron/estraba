@@ -25,6 +25,7 @@
 
 package es.kauron.estraba;
 
+import es.kauron.estraba.controller.SplashController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -32,6 +33,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.ResourceBundle;
 
 import static java.util.ResourceBundle.getBundle;
@@ -59,11 +61,13 @@ public class App extends Application {
         stage.setResizable(false);
         stage.setScene(new Scene(root));
 
-        // Begin awesomewm code
+        if (getParameters().getUnnamed().size() == 1) {
+            loader.<SplashController>getController().loadGPXFile(new File(getParameters().getUnnamed().get(0)));
+        }
+        // fix rogue wm :)
         stage.setMinHeight(500);
         stage.setMinWidth(300);
-        stage.setResizable(false);
-        // End awesomewm code
+
         stage.show();
     }
 }
