@@ -5,7 +5,6 @@ import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXSpinner;
 import es.kauron.estraba.App;
 import es.kauron.estraba.model.DataBundle;
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -66,38 +65,34 @@ public class SplashController implements Initializable{
             errorLoading();
             return;
         }
-        Task<Void> task = new Task<Void>() {
+        Task<DataBundle> task = new Task<DataBundle>() {
             @Override
-            protected Void call() throws Exception {
+            protected DataBundle call() throws Exception {
                 try {
-                    DataBundle bundle = DataBundle.loadFrom(file);
-                    FXMLLoader loader = new FXMLLoader(
-                            App.class.getResource("fxml/Dashboard.fxml"), App.GENERAL_BUNDLE);
-                    Parent root = loader.load();
-
-                    Stage stage = new Stage();
-                    stage.getIcons().add(new Image(App.class.getResource("img/icon.png").toString()));
-                    stage.setTitle(App.GENERAL_BUNDLE.getString("app.title"));
-                    stage.setResizable(false);
-                    stage.setScene(new Scene(root));
-
-                    // Begin awesomewm code
-                    stage.setMinHeight(500);
-                    stage.setMinWidth(800);
-                    stage.setResizable(false);
-                    // End awesomewm code
-                    stage.show();
-                    loader.<DashboardController>getController().postInit(bundle);
-                    Platform.runLater(() -> ((Stage) root.getScene().getWindow()).close());
+                    updateValue(DataBundle.loadFrom(file));
+                    succeeded();
                 } catch (IOException e) {
+                    updateValue(null);
                     errorLoading();
                 }
-                return null;
+                return getValue();
             }
         };
         Thread t = new Thread(task);
         t.setDaemon(true);
         t.start();
+        task.setOnSucceeded(state -> {
+            DataBundle bundle = (DataBundle) state.getSource().getValue();
+            if (bundle == null) errorLoading();
+            FXMLLoader loader = new FXMLLoader(
+                    App.class.getResource("fxml/Dashboard.fxml"), App.GENERAL_BUNDLE);
+            Parent parent = null;
+            try {
+                parent = loader.load();
+            } catch (IOException e) {errorLoading();}
+            loader.<DashboardController>getController().postInit(bundle);
+            ((Stage) root.getScene().getWindow()).setScene(new Scene(parent));
+        });
     }
 
     @Override
