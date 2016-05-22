@@ -30,6 +30,7 @@ import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXSpinner;
 import es.kauron.estraba.App;
 import es.kauron.estraba.model.DataBundle;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -144,17 +145,17 @@ public class SplashController implements Initializable{
             }
         });
 
-        root.getScene().setOnDragOver(e -> {
+        Platform.runLater(() -> root.getScene().setOnDragOver(e -> {
             Dragboard db = e.getDragboard();
             if (db.hasFiles()) {
                 e.acceptTransferModes(TransferMode.COPY);
             } else {
                 e.consume();
             }
-        });
+        }));
 
         // Dropping over surface
-        root.getScene().setOnDragDropped(e -> {
+        Platform.runLater(() -> root.getScene().setOnDragDropped(e -> {
             Dragboard db = e.getDragboard();
             boolean success = false;
             if (db.hasFiles()) {
@@ -167,7 +168,7 @@ public class SplashController implements Initializable{
             }
             e.setDropCompleted(success);
             e.consume();
-        });
+        }));
     }
 
     private void errorLoading() {
