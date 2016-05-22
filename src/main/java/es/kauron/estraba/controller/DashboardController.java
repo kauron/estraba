@@ -129,7 +129,7 @@ public class DashboardController implements Initializable, MapComponentInitializ
         return App.GENERAL_BUNDLE.getString("label.welcome");
     }
 
-    public void load(DataBundle bundle) {
+    void load(DataBundle bundle) {
         valueHRAvg.setText(bundle.HRAvg);
         valueHRMax.setText(bundle.HRMax);
         valueHRMin.setText(bundle.HRMin);
@@ -200,7 +200,17 @@ public class DashboardController implements Initializable, MapComponentInitializ
         // This polyline displays instantly with no problem
         // TODO: add color with PolylineOptions.strokeColor("#ffff00") to match the color schemes of the app
         // When using that method, the line does not load properly, it needs an update to the zoom to show up.
+        map.addMarker(new Marker(new MarkerOptions()
+                .position(new LatLong(
+                        chunks.get(0).getFirstPoint().getLatitude(),
+                        chunks.get(0).getFirstPoint().getLongitude()))
+                .title("label.begin")));
         map.addMapShape(new Polyline(new PolylineOptions().path(pathArray)));
+        map.addMarker(new Marker(new MarkerOptions()
+                .position(new LatLong(
+                        chunks.get(chunks.size() - 1).getLastPoint().getLatitude(),
+                        chunks.get(chunks.size() - 1).getLastPoint().getLongitude()))
+                .title("label.end")));
         // Adjust the map to the correct center and zoom
         map.fitBounds(new LatLongBounds(
                 new LatLong(coord[S], coord[W]),
