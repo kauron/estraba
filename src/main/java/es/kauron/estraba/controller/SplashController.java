@@ -38,12 +38,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -78,6 +83,7 @@ public class SplashController implements Initializable{
 
     private JFXSnackbar snackbar;
     private File file;
+    private int maxHR;
 
     @FXML
     private void loadGPXFile(ActionEvent event) throws Exception {
@@ -93,15 +99,16 @@ public class SplashController implements Initializable{
     }
 
     public void loadGPXFile(File file) {
+        maxHR = showHRDialog();
+        if (maxHR < 0) errorLoading();
         buttonLoad.setVisible(false);
         labelWelcome.setVisible(false);
         spinner.setVisible(true);
-        snackbar.registerSnackbarContainer(root);
         snackbar.show("Loading file", 5000);
         Thread th = new Thread(new Task<DataBundle>() {
             @Override
             protected DataBundle call() throws Exception {
-                return DataBundle.loadFrom(file);
+                return DataBundle.loadFrom(file, maxHR);
             }
 
             @Override
@@ -169,6 +176,7 @@ public class SplashController implements Initializable{
             e.setDropCompleted(success);
             e.consume();
         }));
+        snackbar.registerSnackbarContainer(root);
     }
 
     private void errorLoading() {
@@ -176,6 +184,37 @@ public class SplashController implements Initializable{
         labelWelcome.setVisible(true);
         spinner.setVisible(false);
         snackbar.show("Error loading file", 3000);
+    }
+
+    private int showHRDialog() {
+        Dialog<Integer> dialog = new Dialog<>();
+        dialog.setTitle("Input your maximum heart rate or age");
+        GridPane grid = new GridPane();
+        grid.setHgap(5);
+        grid.setVgap(2);
+        grid.addColumn(0, new Text("Heart rate:"), new Text("Age:"));
+        Spinner<Integer> spinnerAge = new Spinner<>(18, 99, 25, 1);
+        Spinner<Integer> spinnerHR  = new Spinner<>(60, 202, 180, 5);
+        spinnerAge.valueProperty().addListener((obs, oldV, newV) ->
+            spinnerHR.setValueFactory(new SpinnerValueFactory
+                    .IntegerSpinnerValueFactory(60, 202, 220 - newV, 5)));
+        spinnerHR.valueProperty().addListener((obs, old, newV) ->
+                spinnerAge.setValueFactory(new SpinnerValueFactory
+                        .IntegerSpinnerValueFactory(18, 99, 220 - newV, 1)));
+        grid.addColumn(1, spinnerHR, spinnerAge);
+        Button buttonOk = new Button("Ok");
+        buttonOk.setDefaultButton(true);
+        buttonOk.setOnAction(event -> {
+            dialog.setResult(spinnerHR.getValue());
+            dialog.close();
+        });
+        grid.add(buttonOk, 1, 2);
+        dialog.getDialogPane().setContent(grid);
+        dialog.showAndWait();
+        if (dialog.getResult() != null)
+            return dialog.getResult();
+        else
+            return -1;
     }
 }
 

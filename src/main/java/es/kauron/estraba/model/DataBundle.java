@@ -55,7 +55,7 @@ public class DataBundle {
     public ObservableList<PieChart.Data> pieData;
     public ObservableList<Chunk> chunks;
 
-    private DataBundle(TrackData track) {
+    private DataBundle(TrackData track, int maxHR) {
 
         HRAvg = track.getAverageHeartrate() + App.GENERAL_BUNDLE.getString("unit.bpm");
         HRMax = track.getMaxHeartrate() + App.GENERAL_BUNDLE.getString("unit.bpm");
@@ -106,10 +106,10 @@ public class DataBundle {
             cadenceSeries.getData().add(new XYChart.Data<>(currentDistance, chunk.getAvgCadence()));
 
             String zone;
-            if (chunk.getAvgHeartRate() > 170) zone = App.GENERAL_BUNDLE.getString("zone.anaerobic");
-            else if (chunk.getAvgHeartRate() > 150) zone = App.GENERAL_BUNDLE.getString("zone.threshold");
-            else if (chunk.getAvgHeartRate() > 130) zone = App.GENERAL_BUNDLE.getString("zone.tempo");
-            else if (chunk.getAvgHeartRate() > 110) zone = App.GENERAL_BUNDLE.getString("zone.endurance");
+            if (chunk.getAvgHeartRate() > maxHR * .9) zone = App.GENERAL_BUNDLE.getString("zone.anaerobic");
+            else if (chunk.getAvgHeartRate() > maxHR * .8) zone = App.GENERAL_BUNDLE.getString("zone.threshold");
+            else if (chunk.getAvgHeartRate() > maxHR * .7) zone = App.GENERAL_BUNDLE.getString("zone.tempo");
+            else if (chunk.getAvgHeartRate() > maxHR * .6) zone = App.GENERAL_BUNDLE.getString("zone.endurance");
             else zone = App.GENERAL_BUNDLE.getString("zone.recovery");
 
             boolean pieFound = false;
@@ -117,13 +117,14 @@ public class DataBundle {
                 if (d.getName().equals(zone)) {
                     pieFound = true;
                     d.setPieValue(d.getPieValue() + 1);
+                    break;
                 }
             }
             if (!pieFound) pieData.add( new PieChart.Data(zone, 1) );
         }
     }
 
-    public static DataBundle loadFrom(File file) throws Exception {
+    public static DataBundle loadFrom(File file, int maxHR) throws Exception {
         JAXBElement<Object> jaxbElement;
         JAXBContext jaxbContext = JAXBContext.newInstance(GpxType.class, TrackPointExtensionT.class);
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
@@ -131,6 +132,6 @@ public class DataBundle {
         GpxType gpx = (GpxType) jaxbElement.getValue();
 
         if (gpx == null) throw new Exception();
-        return new DataBundle(new TrackData(new Track(gpx.getTrk().get(0))));
+        return new DataBundle(new TrackData(new Track(gpx.getTrk().get(0))), maxHR);
     }
 }

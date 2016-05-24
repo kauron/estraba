@@ -37,7 +37,10 @@ import es.kauron.estraba.model.DataBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
@@ -46,8 +49,10 @@ import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import jgpx.model.analysis.Chunk;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -62,7 +67,7 @@ public class DashboardController implements Initializable, MapComponentInitializ
     private AnchorPane root;
 
     @FXML
-    private Tab tabDashboard, tabMap, tabGraph, tabSettings;
+    private Tab tabDashboard, tabMap, tabGraph;
 
     @FXML
     private ImageView imgHR, imgSpeed, imgCadence, imgDate, imgDistance, imgElevation;
@@ -92,6 +97,7 @@ public class DashboardController implements Initializable, MapComponentInitializ
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        mapView.setVisible(false);
         // populate map icons
         ((ImageView)elevationButton.getGraphic()).setImage(new Image(App.class.getResourceAsStream("img/elevation.png")));
         ((ImageView)speedButton.getGraphic()).setImage(new Image(App.class.getResourceAsStream("img/speed.png")));
@@ -105,6 +111,19 @@ public class DashboardController implements Initializable, MapComponentInitializ
         imgDate.setImage(new Image(App.class.getResourceAsStream("img/date.png")));
         imgDistance.setImage(new Image(App.class.getResourceAsStream("img/distance.png")));
         imgElevation.setImage(new Image(App.class.getResourceAsStream("img/elevation.png")));
+    }
+
+    @FXML
+    private void loadFile() {
+        FXMLLoader loader = new FXMLLoader(
+                App.class.getResource("fxml/Splash.fxml"), App.GENERAL_BUNDLE);
+        Parent parent;
+        try {
+            parent = loader.load();
+            ((Stage) root.getScene().getWindow()).setScene(new Scene(parent));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -196,16 +215,12 @@ public class DashboardController implements Initializable, MapComponentInitializ
             coord[W] = Math.min(lon, coord[W]);
             pathArray.push(new LatLong(lat, lon));
         });
-        // Create and add the polyline using the array
-        // This polyline displays instantly with no problem
-        // TODO: add color with PolylineOptions.strokeColor("#ffff00") to match the color schemes of the app
-        // When using that method, the line does not load properly, it needs an update to the zoom to show up.
         map.addMarker(new Marker(new MarkerOptions()
                 .position(new LatLong(
                         chunks.get(0).getFirstPoint().getLatitude(),
                         chunks.get(0).getFirstPoint().getLongitude()))
                 .title("label.begin")));
-        map.addMapShape(new Polyline(new PolylineOptions().path(pathArray)));
+        map.addMapShape(new Polyline(new PolylineOptions().path(pathArray).strokeColor("#fc4c02")));
         map.addMarker(new Marker(new MarkerOptions()
                 .position(new LatLong(
                         chunks.get(chunks.size() - 1).getLastPoint().getLatitude(),
