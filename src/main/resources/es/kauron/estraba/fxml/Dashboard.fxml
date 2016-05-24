@@ -365,7 +365,7 @@
             <padding>
                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
-            <StackPane prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS" >
+            <StackPane prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <children>
                   <GoogleMapView fx:id="mapView" />
                   <JFXSpinner fx:id="mapSpinner" />
@@ -422,38 +422,94 @@
             <padding>
                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
-            <AreaChart fx:id="elevationChart" createSymbols="false" legendVisible="false" minHeight="100.0">
-               <xAxis>
-                  <NumberAxis side="BOTTOM" />
-               </xAxis>
-               <yAxis>
-                  <NumberAxis side="LEFT" />
-               </yAxis>
-            </AreaChart>
-            <LineChart fx:id="speedChart" createSymbols="false" legendVisible="false" minHeight="100.0">
-               <xAxis>
-                  <NumberAxis />
-               </xAxis>
-               <yAxis>
-                  <NumberAxis side="LEFT" />
-               </yAxis>
-            </LineChart>
-            <LineChart fx:id="hrChart" createSymbols="false" legendVisible="false" minHeight="100.0">
-               <xAxis>
-                  <NumberAxis side="BOTTOM" />
-               </xAxis>
-               <yAxis>
-                  <NumberAxis side="LEFT" />
-               </yAxis>
-            </LineChart>
-            <LineChart fx:id="cadenceChart" createSymbols="false" legendVisible="false" minHeight="100.0">
-               <xAxis>
-                  <NumberAxis side="BOTTOM" />
-               </xAxis>
-               <yAxis>
-                  <NumberAxis side="LEFT" />
-               </yAxis>
-            </LineChart>
+            <StackPane>
+               <children>
+                  <AreaChart fx:id="elevationChart" createSymbols="false" legendVisible="false" minHeight="100.0"
+                             onMouseClicked="#toggleChart">
+                     <xAxis>
+                        <NumberAxis side="BOTTOM"/>
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT"/>
+                     </yAxis>
+                  </AreaChart>
+                  <AreaChart fx:id="elevationTChart" createSymbols="false" layoutX="10.0" layoutY="10.0"
+                             legendVisible="false" minHeight="100.0" onMouseClicked="#toggleChart" visible="false">
+                     <xAxis>
+                        <NumberAxis/>
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT"/>
+                     </yAxis>
+                  </AreaChart>
+               </children>
+            </StackPane>
+            <StackPane>
+               <children>
+                  <LineChart fx:id="speedChart" createSymbols="false" legendVisible="false" minHeight="100.0"
+                             onMouseClicked="#toggleChart">
+                     <xAxis>
+                        <NumberAxis/>
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT"/>
+                     </yAxis>
+                  </LineChart>
+                  <LineChart fx:id="speedTChart" createSymbols="false" layoutX="10.0" layoutY="10.0"
+                             legendVisible="false" minHeight="100.0" onMouseClicked="#toggleChart" visible="false">
+                     <xAxis>
+                        <NumberAxis/>
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT"/>
+                     </yAxis>
+                  </LineChart>
+               </children>
+            </StackPane>
+            <StackPane>
+               <children>
+                  <LineChart fx:id="hrChart" createSymbols="false" legendVisible="false" minHeight="100.0"
+                             onMouseClicked="#toggleChart">
+                     <xAxis>
+                        <NumberAxis side="BOTTOM"/>
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT"/>
+                     </yAxis>
+                  </LineChart>
+                  <LineChart fx:id="hrTChart" createSymbols="false" layoutX="10.0" layoutY="10.0" legendVisible="false"
+                             minHeight="100.0" onMouseClicked="#toggleChart" visible="false">
+                     <xAxis>
+                        <NumberAxis/>
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT"/>
+                     </yAxis>
+                  </LineChart>
+               </children>
+            </StackPane>
+            <StackPane>
+               <children>
+                  <LineChart fx:id="cadenceChart" createSymbols="false" legendVisible="false" minHeight="100.0"
+                             onMouseClicked="#toggleChart">
+                     <xAxis>
+                        <NumberAxis side="BOTTOM"/>
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT"/>
+                     </yAxis>
+                  </LineChart>
+                  <LineChart fx:id="cadenceTChart" createSymbols="false" layoutX="10.0" layoutY="10.0"
+                             legendVisible="false" minHeight="100.0" onMouseClicked="#toggleChart" visible="false">
+                     <xAxis>
+                        <NumberAxis/>
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT"/>
+                     </yAxis>
+                  </LineChart>
+               </children>
+            </StackPane>
          </VBox>
       </Tab>
       <Tab fx:id="tabSettings" text="%tab.settings">

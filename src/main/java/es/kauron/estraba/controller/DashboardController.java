@@ -38,6 +38,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
@@ -45,6 +46,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import jgpx.model.analysis.Chunk;
 
@@ -58,29 +60,25 @@ import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable, MapComponentInitializedListener {
 
+    final int N = 0, S = 1, E = 2, W = 3;
+    final double[] coord = new double[4];
     @FXML
     private AnchorPane root;
-
     @FXML
     private Tab tabDashboard, tabMap, tabGraph, tabSettings;
-
     @FXML
     private ImageView imgHR, imgSpeed, imgCadence, imgDate, imgDistance, imgElevation;
-
     @FXML
     private Label valueHRAvg, valueHRMin, valueHRMax, valueSpeedAvg, valueSpeedMax, valueCadenceAvg, valueCadenceMax,
             valueDate, valueTime, valueActiveTime, valueTotalTime, valueDistance, valueElevation, labelMotivationUpper,
             valueAscent, valueDescent, labelMotivatorLower;
     @FXML
     private JFXSpinner mapSpinner;
-
     @FXML
     private PieChart zoneChart;
-
     @FXML
     private GoogleMapView mapView;
     private ObservableList<Chunk> chunks;
-
     @FXML
     private JFXButton elevationButton, speedButton, hrButton, cadenceButton;
 
@@ -88,7 +86,13 @@ public class DashboardController implements Initializable, MapComponentInitializ
     private AreaChart<Double, Double> elevationChart;
 
     @FXML
+    private AreaChart<Long, Double> elevationTChart;
+
+    @FXML
     private LineChart<Double, Double> speedChart, hrChart, cadenceChart, mapChart;
+
+    @FXML
+    private LineChart<Long, Double> speedTChart, hrTChart, cadenceTChart;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -105,6 +109,15 @@ public class DashboardController implements Initializable, MapComponentInitializ
         imgDate.setImage(new Image(App.class.getResourceAsStream("img/date.png")));
         imgDistance.setImage(new Image(App.class.getResourceAsStream("img/distance.png")));
         imgElevation.setImage(new Image(App.class.getResourceAsStream("img/elevation.png")));
+
+
+    }
+
+    @FXML
+    private void toggleChart(MouseEvent e) {
+        System.out.println("hi");
+        for (Node n : ((Node) e.getSource()).getParent().getChildrenUnmodifiable())
+            n.setVisible(!n.isVisible());
     }
 
     @FXML
@@ -149,9 +162,13 @@ public class DashboardController implements Initializable, MapComponentInitializ
 
         // populate the charts
         elevationChart.getData().add(bundle.elevationSeries);
+        elevationTChart.getData().add(bundle.elevationTSeries);
         speedChart.getData().add(bundle.speedSeries);
+        speedTChart.getData().add(bundle.speedTSeries);
         hrChart.getData().add(bundle.hrSeries);
+        hrTChart.getData().add(bundle.hrTSeries);
         cadenceChart.getData().add(bundle.cadenceSeries);
+        cadenceTChart.getData().add(bundle.cadenceTSeries);
 
         //initialize map
         chunks = bundle.chunks;
@@ -161,8 +178,6 @@ public class DashboardController implements Initializable, MapComponentInitializ
     @Override
     public void mapInitialized() {
         // When the JS init is done
-        final int N = 0, S = 1, E = 2, W = 3;
-        final double[] coord = new double[4];
         coord[0] = Double.MIN_VALUE;
         coord[1] = Double.MAX_VALUE;
         coord[2] = Double.MIN_VALUE;
@@ -212,13 +227,20 @@ public class DashboardController implements Initializable, MapComponentInitializ
                         chunks.get(chunks.size() - 1).getLastPoint().getLongitude()))
                 .title("label.end")));
         // Adjust the map to the correct center and zoom
-        map.fitBounds(new LatLongBounds(
+        mapView.setVisible(true);
+        mapSpinner.setVisible(false);
+
+        mapView.heightProperty().addListener(e -> centerMap());
+        mapView.widthProperty().addListener(e -> centerMap());
+        centerMap();
+    }
+
+    private void centerMap() {
+        mapView.getMap().setZoom(getBoundsZoomLevel(coord, mapView.getHeight(), mapView.getWidth()));
+        mapView.getMap().fitBounds(new LatLongBounds(
                 new LatLong(coord[S], coord[W]),
                 new LatLong(coord[N], coord[E])
         ));
-        map.setZoom(getBoundsZoomLevel(coord, mapView.getHeight(), mapView.getWidth()));
-        mapView.setVisible(true);
-        mapSpinner.setVisible(false);
     }
 
     /**
