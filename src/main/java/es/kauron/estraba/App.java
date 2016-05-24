@@ -61,6 +61,7 @@ public class App extends Application {
         stage.setResizable(false);
         stage.setScene(new Scene(root));
 
+
         if (getParameters().getUnnamed().size() == 1) {
             loader.<SplashController>getController().loadGPXFile(new File(getParameters().getUnnamed().get(0)));
         }

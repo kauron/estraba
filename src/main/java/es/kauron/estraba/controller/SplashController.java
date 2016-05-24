@@ -30,7 +30,6 @@ import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXSpinner;
 import es.kauron.estraba.App;
 import es.kauron.estraba.model.DataBundle;
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -108,7 +107,13 @@ public class SplashController implements Initializable{
         Thread th = new Thread(new Task<DataBundle>() {
             @Override
             protected DataBundle call() throws Exception {
-                return DataBundle.loadFrom(file, maxHR);
+                DataBundle db = null;
+                try {
+                    db = DataBundle.loadFrom(file, maxHR);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return db;
             }
 
             @Override
@@ -124,6 +129,7 @@ public class SplashController implements Initializable{
                     loader.<DashboardController>getController().load(bundle);
                     ((Stage) root.getScene().getWindow()).setScene(new Scene(parent));
                 } catch (IOException e) {
+                    e.printStackTrace();
                     errorLoading();
                 }
             }
@@ -152,7 +158,7 @@ public class SplashController implements Initializable{
             }
         });
 
-        Platform.runLater(() -> root.getScene().setOnDragOver(e -> {
+        Platform.runLater(() -> root.setOnDragOver(e -> {
             Dragboard db = e.getDragboard();
             if (db.hasFiles()) {
                 e.acceptTransferModes(TransferMode.COPY);
@@ -162,16 +168,12 @@ public class SplashController implements Initializable{
         }));
 
         // Dropping over surface
-        Platform.runLater(() -> root.getScene().setOnDragDropped(e -> {
+        Platform.runLater(() -> root.setOnDragDropped(e -> {
             Dragboard db = e.getDragboard();
             boolean success = false;
             if (db.hasFiles()) {
                 success = true;
-                String filePath = null;
-                for (File file : db.getFiles()) {
-                    filePath = file.getAbsolutePath();
-                    System.out.println(filePath);
-                }
+                loadGPXFile(db.getFiles().get(0).getAbsoluteFile());
             }
             e.setDropCompleted(success);
             e.consume();
@@ -183,7 +185,7 @@ public class SplashController implements Initializable{
         buttonLoad.setVisible(true);
         labelWelcome.setVisible(true);
         spinner.setVisible(false);
-        snackbar.show("Error loading file", 3000);
+        snackbar.show(App.GENERAL_BUNDLE.getString("error.file"), 3000);
     }
 
     private int showHRDialog() {

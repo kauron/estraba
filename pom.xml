@@ -59,11 +59,6 @@
             <version>8.40.10</version>
         </dependency>
         <dependency>
-            <groupId>jfree</groupId>
-            <artifactId>jfreechart</artifactId>
-            <version>1.0.13</version>
-        </dependency>
-        <dependency>
             <groupId>com.github.rterp</groupId>
             <artifactId>GMapsFX</artifactId>
             <version>GMapsFX-2.0.5</version>

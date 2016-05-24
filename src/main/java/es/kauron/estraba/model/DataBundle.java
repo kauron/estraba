@@ -40,18 +40,20 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
+import java.time.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
+
 public class DataBundle {
-    public static final int N = 0, S = 1, E = 2, W = 3;
     private static final double DISTANCE_EPSILON = 1E-6;
     private static final double KILOMETER_CUTOFF = 10000;
     
     public String HRAvg, HRMax, HRMin, speedAvg, speedMax, cadenceAvg, cadenceMax;
     public String date, time, activeTime, totalTime, distance, elevation, ascent, descent;
     public XYChart.Series<Double, Double> elevationSeries, speedSeries, hrSeries, cadenceSeries;
+    public XYChart.Series<Long, Double> elevationTSeries, speedTSeries, hrTSeries, cadenceTSeries;
     public ObservableList<PieChart.Data> pieData;
     public ObservableList<Chunk> chunks;
 
@@ -87,23 +89,34 @@ public class DataBundle {
         // traverse the chunks
         chunks = track.getChunks();
         double currentDistance = 0.0;
+        Duration currentTime = Duration.ZERO;
         double currentHeight = chunks.get(0).getFirstPoint().getElevation();
 
         elevationSeries = new XYChart.Series<>();
+        elevationTSeries = new XYChart.Series<>();
         cadenceSeries = new XYChart.Series<>();
+        cadenceTSeries = new XYChart.Series<>();
         hrSeries = new XYChart.Series<>();
+        hrTSeries = new XYChart.Series<>();
         speedSeries = new XYChart.Series<>();
+        speedTSeries = new XYChart.Series<>();
         pieData = FXCollections.observableArrayList();
 
         for (Chunk chunk : chunks) {
             currentDistance += chunk.getDistance();
-            if (chunk.getDistance() < DISTANCE_EPSILON) continue;
+            currentTime = currentTime.plus(chunk.getMovingTime());
+            if (chunk.getDistance() < DISTANCE_EPSILON ||
+                    chunk.getMovingTime().getSeconds() < 1) continue;
             currentHeight += chunk.getAscent() - chunk.getDescend();
 
             elevationSeries.getData().add(new XYChart.Data<>(currentDistance, currentHeight));
+            elevationTSeries.getData().add(new XYChart.Data<>(currentTime.toMinutes(), currentHeight));
             speedSeries.getData().add(new XYChart.Data<>(currentDistance, chunk.getSpeed()*3.6)); // m/s
+            speedTSeries.getData().add(new XYChart.Data<>(currentTime.toMinutes(), chunk.getSpeed() * 3.6)); // m/s
             hrSeries.getData().add(new XYChart.Data<>(currentDistance, chunk.getAvgHeartRate()));
+            hrTSeries.getData().add(new XYChart.Data<>(currentTime.toMinutes(), chunk.getAvgHeartRate()));
             cadenceSeries.getData().add(new XYChart.Data<>(currentDistance, chunk.getAvgCadence()));
+            cadenceTSeries.getData().add(new XYChart.Data<>(currentTime.toMinutes(), chunk.getAvgCadence()));
 
             String zone;
             if (chunk.getAvgHeartRate() > maxHR * .9) zone = App.GENERAL_BUNDLE.getString("zone.anaerobic");
