@@ -58,7 +58,7 @@
                <VBox.margin>
                   <Insets />
                </VBox.margin>
-               <VBox minHeight="360.0" minWidth="300.0" prefHeight="300.0">
+               <VBox minHeight="360.0" minWidth="300.0" prefHeight="300.0" HBox.hgrow="ALWAYS">
                   <HBox.margin>
                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                   </HBox.margin>
@@ -204,9 +204,11 @@
                      </VBox>
                   </HBox>
                </VBox>
-               <PieChart fx:id="zoneChart" labelsVisible="false" legendVisible="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="360.0" startAngle="90">
+               <PieChart fx:id="zoneChart" labelsVisible="false" legendVisible="true" minHeight="-Infinity"
+                         minWidth="-Infinity" prefHeight="300.0" prefWidth="360.0" startAngle="90" HBox.hgrow="ALWAYS">
                </PieChart>
-               <VBox layoutX="15.0" layoutY="15.0" minHeight="360.0" minWidth="300.0" prefHeight="300.0">
+               <VBox layoutX="15.0" layoutY="15.0" minHeight="360.0" minWidth="300.0" prefHeight="300.0"
+                     HBox.hgrow="ALWAYS">
                   <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="200.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                      <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                         <Label fx:id="valueDate" alignment="CENTER" layoutX="10.0" layoutY="97.0" maxWidth="1.7976931348623157E308">

@@ -45,6 +45,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
@@ -120,7 +121,6 @@ public class DashboardController implements Initializable, MapComponentInitializ
 
     @FXML
     private void toggleChart(MouseEvent e) {
-        System.out.println("hi");
         for (Node n : ((Node) e.getSource()).getParent().getChildrenUnmodifiable())
             n.setVisible(!n.isVisible());
     }
@@ -139,21 +139,27 @@ public class DashboardController implements Initializable, MapComponentInitializ
     }
 
     @FXML
-    private void onMapButton(ActionEvent event){
-        switch (((JFXButton)event.getSource()).getId()) {
+    private void onMapButton(ActionEvent event) {
+        XYChart.Series<Double, Double> data = elevationChart.getData().get(0);
+        switch (((JFXButton) event.getSource()).getId()) {
             case "elevationButton":
-                mapChart.setData(elevationChart.getData());
+                data = elevationChart.getData().get(0);
                 break;
             case "speedButton":
-                mapChart.setData(speedChart.getData());
+                data = speedChart.getData().get(0);
                 break;
             case "hrButton":
-                mapChart.setData(hrChart.getData());
+                data = hrChart.getData().get(0);
                 break;
             case "cadenceButton":
-                mapChart.setData(cadenceChart.getData());
+                data = cadenceChart.getData().get(0);
                 break;
         }
+
+        if (mapChart.getData().contains(data))
+            mapChart.getData().remove(data);
+        else mapChart.getData().add(data);
+
     }
 
     private String randomMotivation() {
