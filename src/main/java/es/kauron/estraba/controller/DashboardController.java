@@ -45,12 +45,13 @@ import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import jgpx.model.analysis.Chunk;
 
@@ -65,8 +66,8 @@ import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable, MapComponentInitializedListener {
 
-    final int N = 0, S = 1, E = 2, W = 3;
-    final double[] coord = new double[4];
+    private final int N = 0, S = 1, E = 2, W = 3;
+    private final double[] coord = new double[4];
     @FXML
     private AnchorPane root;
     @FXML
@@ -100,6 +101,12 @@ public class DashboardController implements Initializable, MapComponentInitializ
     @FXML
     private LineChart<Long, Double> speedTChart, hrTChart, cadenceTChart;
 
+    @FXML
+    private ChoiceBox<String> choiceBox;
+
+    @FXML
+    private StackPane charts;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         mapView.setVisible(false);
@@ -116,13 +123,14 @@ public class DashboardController implements Initializable, MapComponentInitializ
         imgDate.setImage(new Image(App.class.getResourceAsStream("img/date.png")));
         imgDistance.setImage(new Image(App.class.getResourceAsStream("img/distance.png")));
         imgElevation.setImage(new Image(App.class.getResourceAsStream("img/elevation.png")));
-    }
 
-    @FXML
-    private void toggleChart(MouseEvent e) {
-        System.out.println("hi");
-        for (Node n : ((Node) e.getSource()).getParent().getChildrenUnmodifiable())
-            n.setVisible(!n.isVisible());
+        choiceBox.getItems().add(App.GENERAL_BUNDLE.getString("label.distance"));
+        choiceBox.getItems().add(App.GENERAL_BUNDLE.getString("label.time"));
+        choiceBox.setValue(choiceBox.getItems().get(0));
+        choiceBox.valueProperty().addListener((observableValue, s, t1) -> {
+            for (Node n : charts.getChildrenUnmodifiable())
+                n.setVisible(!n.isVisible());
+        });
     }
 
     @FXML

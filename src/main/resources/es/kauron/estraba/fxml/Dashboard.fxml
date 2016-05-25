@@ -25,17 +25,27 @@
   ~
   -->
 
-<?import com.jfoenix.controls.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXSpinner?>
+<?import com.jfoenix.controls.JFXTabPane?>
 <?import com.lynden.gmapsfx.GoogleMapView?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.chart.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="root" xmlns="http://javafx.com/javafx/8.0.76-ea"
-            fx:controller="es.kauron.estraba.controller.DashboardController">
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.kauron.estraba.controller.DashboardController">
    <JFXTabPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <Tab fx:id="tabDashboard" styleClass=".estraba.dashboard" text="%tab.dashboard">
          <VBox prefHeight="200.0" prefWidth="100.0">
@@ -50,8 +60,8 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
                <styleClass>
-                  <String fx:value="motivation"/>
-                  <String fx:value="motivation.upper"/>
+                  <String fx:value="motivation" />
+                  <String fx:value="motivation.upper" />
                </styleClass>
             </Label>
             <HBox prefHeight="360.0" prefWidth="800.0" VBox.vgrow="ALWAYS">
@@ -63,8 +73,7 @@
                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                   </HBox.margin>
                   <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-                     <ImageView fx:id="imgHR" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true"
-                                preserveRatio="true" styleClass="icon">
+                     <ImageView fx:id="imgHR" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass="icon">
                      </ImageView>
                      <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                         <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="%label.hr">
@@ -75,8 +84,8 @@
                               <Font name="Roboto" size="13.0" />
                            </font>
                            <styleClass>
-                              <String fx:value="label"/>
-                              <String fx:value="label-hr"/>
+                              <String fx:value="label" />
+                              <String fx:value="label-hr" />
                            </styleClass>
                         </Label>
                         <Label fx:id="valueHRAvg" alignment="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER">
@@ -84,9 +93,9 @@
                               <Font size="30.0" />
                            </font>
                            <styleClass>
-                              <String fx:value="value"/>
-                              <String fx:value="value-main"/>
-                              <String fx:value="value-avghr"/>
+                              <String fx:value="value" />
+                              <String fx:value="value-main" />
+                              <String fx:value="value-avghr" />
                            </styleClass>
                         </Label>
                         <HBox>
@@ -98,9 +107,9 @@
                                  <Font name="Roboto" size="13.0" />
                               </font>
                               <styleClass>
-                                 <String fx:value="value"/>
-                                 <String fx:value="value-sub"/>
-                                 <String fx:value="value-minhr"/>
+                                 <String fx:value="value" />
+                                 <String fx:value="value-sub" />
+                                 <String fx:value="value-minhr" />
                               </styleClass>
                            </Label>
                            <Label fx:id="valueHRMax" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
@@ -111,17 +120,16 @@
                                  <Font name="Roboto" size="13.0" />
                               </font>
                               <styleClass>
-                                 <String fx:value="value"/>
-                                 <String fx:value="value-sub"/>
-                                 <String fx:value="value-maxhr"/>
+                                 <String fx:value="value" />
+                                 <String fx:value="value-sub" />
+                                 <String fx:value="value-maxhr" />
                               </styleClass>
                            </Label>
                         </HBox>
                      </VBox>
                   </HBox>
                   <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-                     <ImageView fx:id="imgSpeed" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true"
-                                preserveRatio="true" styleClass="icon">
+                     <ImageView fx:id="imgSpeed" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass="icon">
                      </ImageView>
                      <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                         <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="%label.speed">
@@ -132,8 +140,8 @@
                               <Font name="Roboto" size="13.0" />
                            </font>
                            <styleClass>
-                              <String fx:value="label"/>
-                              <String fx:value="label-speed"/>
+                              <String fx:value="label" />
+                              <String fx:value="label-speed" />
                            </styleClass>
                         </Label>
                         <Label fx:id="valueSpeedAvg" alignment="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER">
@@ -141,9 +149,9 @@
                               <Font size="30.0" />
                            </font>
                            <styleClass>
-                              <String fx:value="value"/>
-                              <String fx:value="value-main"/>
-                              <String fx:value="value-avgspeed"/>
+                              <String fx:value="value" />
+                              <String fx:value="value-main" />
+                              <String fx:value="value-avgspeed" />
                            </styleClass>
                         </Label>
                         <Label fx:id="valueSpeedMax" alignment="CENTER" maxWidth="1.7976931348623157E308">
@@ -154,16 +162,15 @@
                               <Font name="Roboto" size="13.0" />
                            </font>
                            <styleClass>
-                              <String fx:value="value"/>
-                              <String fx:value="value-sub"/>
-                              <String fx:value="value-maxspeed"/>
+                              <String fx:value="value" />
+                              <String fx:value="value-sub" />
+                              <String fx:value="value-maxspeed" />
                            </styleClass>
                         </Label>
                      </VBox>
                   </HBox>
                   <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-                     <ImageView fx:id="imgCadence" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true"
-                                preserveRatio="true" styleClass="icon">
+                     <ImageView fx:id="imgCadence" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass="icon">
                      </ImageView>
                      <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                         <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="%label.cadence">
@@ -174,8 +181,8 @@
                               <Font name="Roboto" size="13.0" />
                            </font>
                            <styleClass>
-                              <String fx:value="label"/>
-                              <String fx:value="label-cadence"/>
+                              <String fx:value="label" />
+                              <String fx:value="label-cadence" />
                            </styleClass>
                         </Label>
                         <Label fx:id="valueCadenceAvg" alignment="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER">
@@ -183,9 +190,9 @@
                               <Font size="30.0" />
                            </font>
                            <styleClass>
-                              <String fx:value="value"/>
-                              <String fx:value="value-main"/>
-                              <String fx:value="value-avgcadence"/>
+                              <String fx:value="value" />
+                              <String fx:value="value-main" />
+                              <String fx:value="value-avgcadence" />
                            </styleClass>
                         </Label>
                         <Label fx:id="valueCadenceMax" alignment="CENTER" maxWidth="1.7976931348623157E308">
@@ -196,9 +203,9 @@
                               <Font name="Roboto" size="13.0" />
                            </font>
                            <styleClass>
-                              <String fx:value="value"/>
-                              <String fx:value="value-sub"/>
-                              <String fx:value="value-maxcadence"/>
+                              <String fx:value="value" />
+                              <String fx:value="value-sub" />
+                              <String fx:value="value-maxcadence" />
                            </styleClass>
                         </Label>
                      </VBox>
@@ -217,8 +224,8 @@
                               <Font name="Roboto" size="13.0" />
                            </font>
                            <styleClass>
-                              <String fx:value="value"/>
-                              <String fx:value="value-sub"/>
+                              <String fx:value="value" />
+                              <String fx:value="value-sub" />
                            </styleClass>
                            <VBox.margin>
                               <Insets />
@@ -232,8 +239,8 @@
                               <Font name="Roboto" size="13.0" />
                            </font>
                            <styleClass>
-                              <String fx:value="value"/>
-                              <String fx:value="value-sub"/>
+                              <String fx:value="value" />
+                              <String fx:value="value-sub" />
                            </styleClass>
                         </Label>
                         <Label fx:id="valueActiveTime" alignment="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER">
@@ -241,9 +248,9 @@
                               <Font size="30.0" />
                            </font>
                            <styleClass>
-                              <String fx:value="value"/>
-                              <String fx:value="value-main"/>
-                              <String fx:value="value-activetime"/>
+                              <String fx:value="value" />
+                              <String fx:value="value-main" />
+                              <String fx:value="value-activetime" />
                            </styleClass>
                         </Label>
                         <Label fx:id="valueTotalTime" alignment="CENTER" maxWidth="1.7976931348623157E308">
@@ -254,14 +261,13 @@
                               <Font name="Roboto" size="13.0" />
                            </font>
                            <styleClass>
-                              <String fx:value="value"/>
-                              <String fx:value="value-sub"/>
-                              <String fx:value="value-totaltime"/>
+                              <String fx:value="value" />
+                              <String fx:value="value-sub" />
+                              <String fx:value="value-totaltime" />
                            </styleClass>
                         </Label>
                      </VBox>
-                     <ImageView fx:id="imgDate" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true"
-                                preserveRatio="true" styleClass="icon">
+                     <ImageView fx:id="imgDate" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass="icon">
                      </ImageView>
                   </HBox>
                   <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="200.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
@@ -274,8 +280,8 @@
                               <Font name="Roboto" size="13.0" />
                            </font>
                            <styleClass>
-                              <String fx:value="label"/>
-                              <String fx:value="label-distance"/>
+                              <String fx:value="label" />
+                              <String fx:value="label-distance" />
                            </styleClass>
                         </Label>
                         <Label fx:id="valueDistance" alignment="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER">
@@ -283,14 +289,13 @@
                               <Font size="30.0" />
                            </font>
                            <styleClass>
-                              <String fx:value="value"/>
-                              <String fx:value="value-main"/>
-                              <String fx:value="value-distance"/>
+                              <String fx:value="value" />
+                              <String fx:value="value-main" />
+                              <String fx:value="value-distance" />
                            </styleClass>
                         </Label>
                      </VBox>
-                     <ImageView fx:id="imgDistance" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true"
-                                preserveRatio="true" styleClass="icon">
+                     <ImageView fx:id="imgDistance" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass="icon">
                      </ImageView>
                   </HBox>
                   <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="200.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
@@ -303,8 +308,8 @@
                               <Font name="Roboto" size="13.0" />
                            </font>
                            <styleClass>
-                              <String fx:value="label"/>
-                              <String fx:value="label-elevation"/>
+                              <String fx:value="label" />
+                              <String fx:value="label-elevation" />
                            </styleClass>
                         </Label>
                         <Label fx:id="valueElevation" alignment="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER">
@@ -312,9 +317,9 @@
                               <Font size="30.0" />
                            </font>
                            <styleClass>
-                              <String fx:value="value"/>
-                              <String fx:value="value-main"/>
-                              <String fx:value="value-elevation"/>
+                              <String fx:value="value" />
+                              <String fx:value="value-main" />
+                              <String fx:value="value-elevation" />
                            </styleClass>
                         </Label>
                         <HBox>
@@ -326,9 +331,9 @@
                                  <Font name="Roboto" size="13.0" />
                               </font>
                               <styleClass>
-                                 <String fx:value="value"/>
-                                 <String fx:value="value-sub"/>
-                                 <String fx:value="value-ascent"/>
+                                 <String fx:value="value" />
+                                 <String fx:value="value-sub" />
+                                 <String fx:value="value-ascent" />
                               </styleClass>
                            </Label>
                            <Label fx:id="valueDescent" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
@@ -339,15 +344,14 @@
                                  <Font name="Roboto" size="13.0" />
                               </font>
                               <styleClass>
-                                 <String fx:value="value"/>
-                                 <String fx:value="value-sub"/>
-                                 <String fx:value="value-descent"/>
+                                 <String fx:value="value" />
+                                 <String fx:value="value-sub" />
+                                 <String fx:value="value-descent" />
                               </styleClass>
                            </Label>
                         </HBox>
                      </VBox>
-                     <ImageView fx:id="imgElevation" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true"
-                                preserveRatio="true" styleClass="icon">
+                     <ImageView fx:id="imgElevation" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" styleClass="icon">
                      </ImageView>
                   </HBox>
                </VBox>
@@ -417,96 +421,85 @@
          </VBox>
       </Tab>
       <Tab fx:id="tabGraph" text="%tab.graph">
-         <VBox>
+         <VBox alignment="CENTER">
             <padding>
                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
-            <StackPane>
+            <ChoiceBox fx:id="choiceBox" prefWidth="150.0" />
+            <StackPane fx:id="charts">
                <children>
-                  <AreaChart fx:id="elevationChart" createSymbols="false" legendVisible="false" minHeight="100.0"
-                             onMouseClicked="#toggleChart">
-                     <xAxis>
-                        <NumberAxis side="BOTTOM"/>
-                     </xAxis>
-                     <yAxis>
-                        <NumberAxis side="LEFT"/>
-                     </yAxis>
-                  </AreaChart>
-                  <AreaChart fx:id="elevationTChart" createSymbols="false" layoutX="10.0" layoutY="10.0"
-                             legendVisible="false" minHeight="100.0" onMouseClicked="#toggleChart" visible="false">
-                     <xAxis>
-                        <NumberAxis/>
-                     </xAxis>
-                     <yAxis>
-                        <NumberAxis side="LEFT"/>
-                     </yAxis>
-                  </AreaChart>
-               </children>
-            </StackPane>
-            <StackPane>
-               <children>
-                  <LineChart fx:id="speedChart" createSymbols="false" legendVisible="false" minHeight="100.0"
-                             onMouseClicked="#toggleChart">
-                     <xAxis>
-                        <NumberAxis/>
-                     </xAxis>
-                     <yAxis>
-                        <NumberAxis side="LEFT"/>
-                     </yAxis>
-                  </LineChart>
-                  <LineChart fx:id="speedTChart" createSymbols="false" layoutX="10.0" layoutY="10.0"
-                             legendVisible="false" minHeight="100.0" onMouseClicked="#toggleChart" visible="false">
-                     <xAxis>
-                        <NumberAxis/>
-                     </xAxis>
-                     <yAxis>
-                        <NumberAxis side="LEFT"/>
-                     </yAxis>
-                  </LineChart>
-               </children>
-            </StackPane>
-            <StackPane>
-               <children>
-                  <LineChart fx:id="hrChart" createSymbols="false" legendVisible="false" minHeight="100.0"
-                             onMouseClicked="#toggleChart">
-                     <xAxis>
-                        <NumberAxis side="BOTTOM"/>
-                     </xAxis>
-                     <yAxis>
-                        <NumberAxis side="LEFT"/>
-                     </yAxis>
-                  </LineChart>
-                  <LineChart fx:id="hrTChart" createSymbols="false" layoutX="10.0" layoutY="10.0" legendVisible="false"
-                             minHeight="100.0" onMouseClicked="#toggleChart" visible="false">
-                     <xAxis>
-                        <NumberAxis/>
-                     </xAxis>
-                     <yAxis>
-                        <NumberAxis side="LEFT"/>
-                     </yAxis>
-                  </LineChart>
-               </children>
-            </StackPane>
-            <StackPane>
-               <children>
-                  <LineChart fx:id="cadenceChart" createSymbols="false" legendVisible="false" minHeight="100.0"
-                             onMouseClicked="#toggleChart">
-                     <xAxis>
-                        <NumberAxis side="BOTTOM"/>
-                     </xAxis>
-                     <yAxis>
-                        <NumberAxis side="LEFT"/>
-                     </yAxis>
-                  </LineChart>
-                  <LineChart fx:id="cadenceTChart" createSymbols="false" layoutX="10.0" layoutY="10.0"
-                             legendVisible="false" minHeight="100.0" onMouseClicked="#toggleChart" visible="false">
-                     <xAxis>
-                        <NumberAxis/>
-                     </xAxis>
-                     <yAxis>
-                        <NumberAxis side="LEFT"/>
-                     </yAxis>
-                  </LineChart>
+                  <VBox>
+                     <children>
+                        <AreaChart fx:id="elevationChart" createSymbols="false" legendVisible="false" minHeight="100.0">
+                           <xAxis>
+                              <NumberAxis side="BOTTOM" />
+                           </xAxis>
+                           <yAxis>
+                              <NumberAxis side="LEFT" />
+                           </yAxis>
+                        </AreaChart>
+                        <LineChart fx:id="speedChart" createSymbols="false" legendVisible="false" minHeight="100.0">
+                           <xAxis>
+                              <NumberAxis />
+                           </xAxis>
+                           <yAxis>
+                              <NumberAxis side="LEFT" />
+                           </yAxis>
+                        </LineChart>
+                        <LineChart fx:id="hrChart" createSymbols="false" legendVisible="false" minHeight="100.0">
+                           <xAxis>
+                              <NumberAxis side="BOTTOM" />
+                           </xAxis>
+                           <yAxis>
+                              <NumberAxis side="LEFT" />
+                           </yAxis>
+                        </LineChart>
+                        <LineChart fx:id="cadenceChart" createSymbols="false" legendVisible="false" minHeight="100.0">
+                           <xAxis>
+                              <NumberAxis side="BOTTOM" />
+                           </xAxis>
+                           <yAxis>
+                              <NumberAxis side="LEFT" />
+                           </yAxis>
+                        </LineChart>
+                     </children>
+                  </VBox>
+                  <VBox visible="false">
+                     <children>
+                        <AreaChart fx:id="elevationTChart" createSymbols="false" legendVisible="false" minHeight="100.0">
+                           <xAxis>
+                              <NumberAxis />
+                           </xAxis>
+                           <yAxis>
+                              <NumberAxis side="LEFT" />
+                           </yAxis>
+                        </AreaChart>
+                        <LineChart fx:id="speedTChart" createSymbols="false" legendVisible="false" minHeight="100.0">
+                           <xAxis>
+                              <NumberAxis />
+                           </xAxis>
+                           <yAxis>
+                              <NumberAxis side="LEFT" />
+                           </yAxis>
+                        </LineChart>
+                        <LineChart fx:id="hrTChart" createSymbols="false" legendVisible="false" minHeight="100.0">
+                           <xAxis>
+                              <NumberAxis />
+                           </xAxis>
+                           <yAxis>
+                              <NumberAxis side="LEFT" />
+                           </yAxis>
+                        </LineChart>
+                        <LineChart fx:id="cadenceTChart" createSymbols="false" legendVisible="false" minHeight="100.0">
+                           <xAxis>
+                              <NumberAxis />
+                           </xAxis>
+                           <yAxis>
+                              <NumberAxis side="LEFT" />
+                           </yAxis>
+                        </LineChart>
+                     </children>
+                  </VBox>
                </children>
             </StackPane>
          </VBox>
