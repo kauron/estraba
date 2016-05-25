@@ -27,6 +27,7 @@ package es.kauron.estraba.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSpinner;
+import com.jfoenix.controls.JFXToggleButton;
 import com.lynden.gmapsfx.GoogleMapView;
 import com.lynden.gmapsfx.MapComponentInitializedListener;
 import com.lynden.gmapsfx.javascript.object.*;
@@ -45,7 +46,6 @@ import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
@@ -102,7 +102,7 @@ public class DashboardController implements Initializable, MapComponentInitializ
     private LineChart<Long, Double> speedTChart, hrTChart, cadenceTChart;
 
     @FXML
-    private ChoiceBox<String> choiceBox;
+    private JFXToggleButton toggleCharts;
 
     @FXML
     private StackPane charts;
@@ -124,10 +124,7 @@ public class DashboardController implements Initializable, MapComponentInitializ
         imgDistance.setImage(new Image(App.class.getResourceAsStream("img/distance.png")));
         imgElevation.setImage(new Image(App.class.getResourceAsStream("img/elevation.png")));
 
-        choiceBox.getItems().add(App.GENERAL_BUNDLE.getString("label.distance"));
-        choiceBox.getItems().add(App.GENERAL_BUNDLE.getString("label.time"));
-        choiceBox.setValue(choiceBox.getItems().get(0));
-        choiceBox.valueProperty().addListener((observableValue, s, t1) -> {
+        toggleCharts.selectedProperty().addListener((observableValue, s, t1) -> {
             for (Node n : charts.getChildrenUnmodifiable())
                 n.setVisible(!n.isVisible());
         });
