@@ -24,15 +24,29 @@
  */
 
 .root {
+    -fx-background-color: white;
     -fx-font: 14px "DAGGERSQUARE";
+    -fx-font-smoothing-type: lcd;
     -fx-font-family: DAGGERSQUARE;
 }
 
-.text {
-    -fx-font-smoothing-type: lcd;
+.tab-label {
+    -fx-font: 14px "DAGGERSQUARE";
+}
+
+.tab-header-background {
+    -fx-background-color: #FF5722;
+}
+
+.tab-selected-line {
+    -fx-stroke: white;
 }
 
 .label {
+}
+
+.motivation {
+    -fx-font: 42px "DAGGERSQUARE";
 }
 
 .value-main {

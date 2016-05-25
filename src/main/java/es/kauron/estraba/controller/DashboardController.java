@@ -46,6 +46,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
@@ -148,24 +149,35 @@ public class DashboardController implements Initializable, MapComponentInitializ
     @FXML
     private void onMapButton(ActionEvent event) {
         XYChart.Series<Double, Double> data = elevationChart.getData().get(0);
-        switch (((JFXButton) event.getSource()).getId()) {
+        String color = "#000000";
+        JFXButton b = ((JFXButton) event.getSource());
+        switch (b.getId()) {
             case "elevationButton":
                 data = elevationChart.getData().get(0);
+                color = "#2c8f30";
                 break;
             case "speedButton":
                 data = speedChart.getData().get(0);
+                color = "#c0775f";
                 break;
             case "hrButton":
                 data = hrChart.getData().get(0);
+                color = "#df1d00";
                 break;
             case "cadenceButton":
                 data = cadenceChart.getData().get(0);
+                color = "#1f31a5";
                 break;
         }
 
-        if (mapChart.getData().contains(data))
+        if (mapChart.getData().contains(data)) {
             mapChart.getData().remove(data);
-        else mapChart.getData().add(data);
+        } else {
+            mapChart.getData().add(data);
+            mapChart.setStyle(String.format(".default-color%d.chart-series-line { -fx-stroke: %s }",
+                    mapChart.getData().size() - 1, color));
+
+        }
 
     }
 

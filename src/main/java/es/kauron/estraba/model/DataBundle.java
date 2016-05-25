@@ -83,8 +83,8 @@ public class DataBundle {
         }
 
         elevation = (int)(track.getTotalAscent() - track.getTotalDescend()) + App.GENERAL_BUNDLE.getString("unit.m");
-        ascent = "+ " + (int) track.getTotalAscent() + App.GENERAL_BUNDLE.getString("unit.m");
-        descent = "- " + (int) track.getTotalDescend() + App.GENERAL_BUNDLE.getString("unit.m");
+        ascent = (int) track.getTotalAscent() + App.GENERAL_BUNDLE.getString("unit.m") + " ↗";
+        descent = "↘ " + (int) track.getTotalDescend() + App.GENERAL_BUNDLE.getString("unit.m");
 
         // traverse the chunks
         chunks = track.getChunks();
@@ -100,7 +100,19 @@ public class DataBundle {
         hrTSeries = new XYChart.Series<>();
         speedSeries = new XYChart.Series<>();
         speedTSeries = new XYChart.Series<>();
+
+        elevationSeries.setName(App.GENERAL_BUNDLE.getString("label.elevation"));
+        cadenceSeries.setName(App.GENERAL_BUNDLE.getString("label.cadence"));
+        hrSeries.setName(App.GENERAL_BUNDLE.getString("label.hr"));
+        speedSeries.setName(App.GENERAL_BUNDLE.getString("label.speed"));
+
         pieData = FXCollections.observableArrayList();
+        pieData.add(new PieChart.Data(App.GENERAL_BUNDLE.getString("zone.recovery"), 0));
+        pieData.add(new PieChart.Data(App.GENERAL_BUNDLE.getString("zone.endurance"), 0));
+        pieData.add(new PieChart.Data(App.GENERAL_BUNDLE.getString("zone.tempo"), 0));
+        pieData.add(new PieChart.Data(App.GENERAL_BUNDLE.getString("zone.threshold"), 0));
+        pieData.add(new PieChart.Data(App.GENERAL_BUNDLE.getString("zone.anaerobic"), 0));
+
 
         for (Chunk chunk : chunks) {
             currentDistance += chunk.getDistance();
@@ -125,15 +137,14 @@ public class DataBundle {
             else if (chunk.getAvgHeartRate() > maxHR * .6) zone = App.GENERAL_BUNDLE.getString("zone.endurance");
             else zone = App.GENERAL_BUNDLE.getString("zone.recovery");
 
+
             boolean pieFound = false;
             for (PieChart.Data d : pieData){
                 if (d.getName().equals(zone)) {
-                    pieFound = true;
                     d.setPieValue(d.getPieValue() + 1);
                     break;
                 }
             }
-            if (!pieFound) pieData.add( new PieChart.Data(zone, 1) );
         }
     }
 

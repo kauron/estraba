@@ -25,27 +25,16 @@
   ~
   -->
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXSpinner?>
-<?import com.jfoenix.controls.JFXTabPane?>
-<?import com.jfoenix.controls.JFXToggleButton?>
+<?import com.jfoenix.controls.*?>
 <?import com.lynden.gmapsfx.GoogleMapView?>
-<?import java.lang.String?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.AreaChart?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.chart.PieChart?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-
-<AnchorPane fx:id="root" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.kauron.estraba.controller.DashboardController">
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="root" xmlns="http://javafx.com/javafx/8.0.76-ea"
+            fx:controller="es.kauron.estraba.controller.DashboardController">
    <JFXTabPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <Tab fx:id="tabDashboard" text="%tab.dashboard">
          <VBox prefHeight="200.0" prefWidth="100.0">
@@ -298,7 +287,12 @@
             </HBox>
             <HBox alignment="CENTER" spacing="10.0">
                <children>
-                  <JFXButton minWidth="70.0" onAction="#loadFile" style="-fx-background-color: #fc4c02;" text="Load another file" textAlignment="CENTER" textFill="WHITE" />
+                  <JFXButton minWidth="70.0" onAction="#loadFile" style="-fx-background-color: #fc4c02;"
+                             text="Load another file" textAlignment="CENTER" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="10.0"/>
+                     </HBox.margin>
+                  </JFXButton>
                </children>
             </HBox>
          </VBox>
@@ -349,7 +343,8 @@
                      </VBox.margin>
                   </JFXButton>
                </VBox>
-               <LineChart fx:id="mapChart" animated="false" createSymbols="false" legendVisible="false" HBox.hgrow="ALWAYS">
+               <LineChart fx:id="mapChart" animated="false" createSymbols="false" legendSide="TOP" minHeight="0.0"
+                          minWidth="0.0" HBox.hgrow="ALWAYS">
                   <xAxis>
                      <NumberAxis side="BOTTOM" />
                   </xAxis>
@@ -368,7 +363,8 @@
             <HBox alignment="CENTER" spacing="5.0">
                <children>
                   <Label text="%label.distance" />
-                  <JFXToggleButton fx:id="toggleCharts" unToggleColor="#fc4c02" unToggleLineColor="#ffba9e">
+                  <JFXToggleButton fx:id="toggleCharts" toggleColor="#fc4c02" toggleLineColor="#ffba9e"
+                                   unToggleColor="#fc4c02" unToggleLineColor="#ffba9e">
                      <padding>
                         <Insets bottom="-5.0" left="-5.0" right="-5.0" top="-5.0" />
                      </padding>
