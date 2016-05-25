@@ -110,6 +110,8 @@ public class DashboardController implements Initializable, MapComponentInitializ
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        root.getStylesheets().add(App.class.getResource("css/estraba.css").toExternalForm());
+
         mapView.setVisible(false);
         // populate map icons
         ((ImageView)elevationButton.getGraphic()).setImage(new Image(App.class.getResourceAsStream("img/elevation.png")));
@@ -202,6 +204,8 @@ public class DashboardController implements Initializable, MapComponentInitializ
         hrTChart.getData().add(bundle.hrTSeries);
         cadenceChart.getData().add(bundle.cadenceSeries);
         cadenceTChart.getData().add(bundle.cadenceTSeries);
+
+        mapChart.setLegendVisible(true);
 
         //initialize map
         chunks = bundle.chunks;

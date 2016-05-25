@@ -23,18 +23,44 @@
  *
  */
 
+.root {
+    -fx-font: 14px "DAGGERSQUARE";
+    -fx-font-family: DAGGERSQUARE;
+}
+
 .text {
     -fx-font-smoothing-type: lcd;
 }
 
-value-minhr {
+.label {
+}
+
+.value-main {
+    -fx-font: 30px "DAGGERSQUARE";
+}
+
+.value-sub {
+}
+
+.value-minhr {
     -fx-text-fill: #2aa;
 }
 
-value-maxhr {
+.value-maxhr {
     -fx-text-fill: #a22;
 }
 
-value-avghr {
-    -fx-text-fill: #2a2
+.value-avghr {
+}
+
+.jfx-snackbar-content {
+    -fx-background-color: #323232;
+}
+
+.jfx-snackbar-toast {
+    -fx-text-fill: WHITE;
+}
+
+.jfx-snackbar-action {
+    -fx-text-fill: #ff4081;
 }

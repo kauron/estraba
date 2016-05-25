@@ -154,8 +154,8 @@ public class SplashController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        root.getStylesheets().add(App.class.getResource("css/estraba.css").toExternalForm());
         imgLogo.setImage(new Image(App.class.getResourceAsStream("img/header.png")));
-        labelWelcome.setFont(App.DAGGERSQUARE);
         snackbar = new JFXSnackbar();
 
         imgLogo.setOnMouseClicked(e -> {
