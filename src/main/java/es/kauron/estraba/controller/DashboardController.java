@@ -116,8 +116,6 @@ public class DashboardController implements Initializable, MapComponentInitializ
         imgDate.setImage(new Image(App.class.getResourceAsStream("img/date.png")));
         imgDistance.setImage(new Image(App.class.getResourceAsStream("img/distance.png")));
         imgElevation.setImage(new Image(App.class.getResourceAsStream("img/elevation.png")));
-
-
     }
 
     @FXML

@@ -30,6 +30,7 @@ import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXSpinner;
 import es.kauron.estraba.App;
 import es.kauron.estraba.model.DataBundle;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -148,6 +149,7 @@ public class SplashController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         imgLogo.setImage(new Image(App.class.getResourceAsStream("img/header.png")));
+        labelWelcome.setFont(App.DAGGERSQUARE);
         snackbar = new JFXSnackbar();
 
         imgLogo.setOnMouseClicked(e -> {

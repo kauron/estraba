@@ -31,6 +31,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -43,6 +44,7 @@ import static java.util.ResourceBundle.getBundle;
  */
 public class App extends Application {
     public final static ResourceBundle GENERAL_BUNDLE = getBundle("general");
+    public final static Font DAGGERSQUARE = Font.loadFont(App.class.getResourceAsStream("fonts/DAGGERSQUARE.otf"), 0);
     /**
      * @param args the command line arguments
      */
@@ -60,6 +62,7 @@ public class App extends Application {
         stage.setTitle(GENERAL_BUNDLE.getString("app.title"));
         stage.setResizable(false);
         stage.setScene(new Scene(root));
+        stage.getScene().getStylesheets().add(App.class.getResource("css/estraba.css").toExternalForm());
 
 
         if (getParameters().getUnnamed().size() == 1) {

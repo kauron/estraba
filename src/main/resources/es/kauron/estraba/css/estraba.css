@@ -23,3 +23,18 @@
  *
  */
 
+.text {
+    -fx-font-smoothing-type: lcd;
+}
+
+value-minhr {
+    -fx-text-fill: #2aa;
+}
+
+value-maxhr {
+    -fx-text-fill: #a22;
+}
+
+value-avghr {
+    -fx-text-fill: #2a2
+}
